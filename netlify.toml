@@ -1,0 +1,15 @@
+# Netlify config — static site, no build step
+[build]
+  publish = "."
+
+# Long-cache static assets (logo, images)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Friendly 404 (falls back to home) — optional
+[[redirects]]
+  from = "/home"
+  to = "/index.html"
+  status = 301
