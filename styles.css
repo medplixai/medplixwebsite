@@ -739,6 +739,43 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
   .addons{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr 1fr}
 }
+
+/* ===================== HOW IT WORKS ===================== */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:16px}
+.step{position:relative;background:linear-gradient(180deg,#ffffff,#fbfdff);border:1px solid var(--line);
+  border-radius:var(--r);padding:30px 22px 24px;box-shadow:var(--shadow-sm);overflow:hidden}
+.step::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--grad-teal)}
+.step-no{position:absolute;top:14px;right:18px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;
+  font-size:2.5rem;line-height:1;color:#eaf3f1;letter-spacing:-1px}
+.step-ico{display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:15px;
+  font-size:1.5rem;background:linear-gradient(160deg,#eafaf6,#d6f1ea);
+  box-shadow:inset 0 1px 0 #fff,0 8px 18px -12px rgba(13,138,120,.6);margin-bottom:16px}
+.step h3{font-size:1.08rem;margin:0 0 7px}
+.step p{color:var(--muted);font-size:.94rem;line-height:1.55;margin:0}
+.step:not(:last-child)::after{content:"→";position:absolute;top:50%;right:-15px;transform:translateY(-50%);
+  color:var(--teal);font-weight:700;font-size:1.25rem;z-index:2}
+
+/* ===================== SECURITY & RELIABILITY ===================== */
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px}
+.trust-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;
+  box-shadow:var(--shadow-sm);transition:transform .25s ease,box-shadow .25s ease}
+.trust-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.trust-ico{display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:14px;
+  font-size:1.4rem;background:linear-gradient(160deg,#eef4fb,#e0ecfa);
+  box-shadow:inset 0 1px 0 #fff,0 8px 18px -12px rgba(28,79,160,.5);margin-bottom:14px}
+.trust-card h3{font-size:1.05rem;margin:0 0 7px}
+.trust-card p{color:var(--muted);font-size:.93rem;line-height:1.55;margin:0}
+
+@media(max-width:880px){
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .step:not(:last-child)::after{display:none}
+  .trust-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+  .steps{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr}
+}
+
 @media(max-width:760px){
   .mobile-cta-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:90;gap:10px;padding:10px 14px;
     background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid var(--line);box-shadow:0 -10px 26px -18px rgba(15,44,77,.4)}
