@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://medplix.info/sitemap.xml
+Sitemap: https://medplix.ai/sitemap.xml
