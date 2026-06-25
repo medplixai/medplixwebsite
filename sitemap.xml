@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://medplix.ai/</loc>
+    <loc>https://medplix.info/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <url><loc>https://medplix.ai/#products</loc><priority>0.9</priority></url>
-  <url><loc>https://medplix.ai/#pricing</loc><priority>0.9</priority></url>
-  <url><loc>https://medplix.ai/#ai-connect</loc><priority>0.8</priority></url>
-  <url><loc>https://medplix.ai/#marketing</loc><priority>0.7</priority></url>
-  <url><loc>https://medplix.ai/#support</loc><priority>0.7</priority></url>
-  <url><loc>https://medplix.ai/#faq</loc><priority>0.6</priority></url>
-  <url><loc>https://medplix.ai/#demo</loc><priority>0.8</priority></url>
-  <url><loc>https://medplix.ai/privacy.html</loc><priority>0.3</priority></url>
-  <url><loc>https://medplix.ai/terms.html</loc><priority>0.3</priority></url>
+  <url><loc>https://medplix.info/#products</loc><priority>0.9</priority></url>
+  <url><loc>https://medplix.info/#pricing</loc><priority>0.9</priority></url>
+  <url><loc>https://medplix.info/#ai-connect</loc><priority>0.8</priority></url>
+  <url><loc>https://medplix.info/#marketing</loc><priority>0.7</priority></url>
+  <url><loc>https://medplix.info/#support</loc><priority>0.7</priority></url>
+  <url><loc>https://medplix.info/#faq</loc><priority>0.6</priority></url>
+  <url><loc>https://medplix.info/#demo</loc><priority>0.8</priority></url>
+  <url><loc>https://medplix.info/privacy.html</loc><priority>0.3</priority></url>
+  <url><loc>https://medplix.info/terms.html</loc><priority>0.3</priority></url>
 </urlset>
