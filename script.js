@@ -295,18 +295,8 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
     if (location.hash && location.hash.length > 1) { markSeen(null); return; }      // any anchor deep-link = intent
     if (!document.documentElement.classList.contains('js')) return;
     if (seen()) return;
-    var opts = { passive: true };
-    var cancel = function (e) {
-      if (e && e.type === 'scroll' && (window.scrollY || window.pageYOffset || 0) < 8) return; // ignore load-time scroll jitter
-      if (openTimer) { clearTimeout(openTimer); openTimer = null; }
-      window.removeEventListener('scroll', cancel, opts);
-      window.removeEventListener('keydown', cancel, opts);
-      window.removeEventListener('pointerdown', cancel, opts);
-    };
-    window.addEventListener('scroll', cancel, opts);
-    window.addEventListener('keydown', cancel, opts);
-    window.addEventListener('pointerdown', cancel, opts);
-    openTimer = setTimeout(function () { openTimer = null; if (!seen()) openModal(false); }, 700);
+    // Welcome modal appears 50 seconds after the page loads (once per tab session).
+    openTimer = setTimeout(function () { openTimer = null; if (!seen()) openModal(false); }, 50000);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
