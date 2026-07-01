@@ -168,6 +168,7 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
   var main = document.getElementById('main');
   var SKEY = 'medplix_role_v1';   // suppression flag (per tab session)
   var RKEY = 'medplix_role';      // last chosen role
+  var DKEY = 'medplix_demo_v1';   // demo-popup (50s) suppression flag (per tab session)
   var ROLES = {
     // selecting a product takes the visitor to its dedicated detail page
     hospital: { page: 'product-hms.html',      biz: 'Hospital' },               // Medplix HMS
@@ -175,13 +176,15 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
     lab:      { page: 'product-labs.html',     biz: 'Laboratory / Diagnostics' }, // Medplix Labs
     pharmacy: { page: 'product-pharmacy.html', biz: 'Pharmacy' }                // Medplix Pharmacy
   };
-  var lastFocused = null, isClosing = false, openTimer = null, fallbackSeen = false, storageOK = true;
+  var lastFocused = null, isClosing = false, openTimer = null, demoTimer = null, fallbackSeen = false, fallbackDemoSeen = false, storageOK = true;
 
   function safeGet(k){ try { return sessionStorage.getItem(k); } catch (e) { storageOK = false; return null; } }
   function safeSet(k, v){ try { sessionStorage.setItem(k, v); } catch (e) { storageOK = false; } }
   function seen(){ return fallbackSeen || (storageOK && !!safeGet(SKEY)); }
   function storedRole(){ try { var v = JSON.parse(safeGet(SKEY) || 'null'); return v && v.role; } catch (e) { return null; } }
   function markSeen(role){ fallbackSeen = true; safeSet(SKEY, JSON.stringify({ role: role || null, ts: Date.now() })); }
+  function seenDemo(){ return fallbackDemoSeen || (storageOK && !!safeGet(DKEY)); }
+  function markSeenDemo(){ fallbackDemoSeen = true; safeSet(DKEY, '1'); }
   function validRole(r){ return !!r && Object.prototype.hasOwnProperty.call(ROLES, r); }
 
   function tabbables(){
@@ -269,6 +272,20 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
     var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
   }
 
+  // Demo lead-capture popup (fires ~50s after load): open the modal straight to the CRM demo form
+  function openDemo(){
+    if (seenDemo() || storedRole()) return;                 // skip if already shown, or a role was already chosen
+    if (modal.classList.contains('open')) return;           // don't interrupt an already-open modal
+    markSeenDemo();
+    openModal(true);                                        // force-open (bypasses the role-picker 'seen')
+    var frame = modal.querySelector('.role-lead-iframe');
+    if (frame) frame.src = 'https://crm.medplix.ai/?lead&src=popup-50s';
+    var rt = modal.querySelector('[data-lead-role]'); if (rt) rt.textContent = 'free';
+    var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', 'index.html#products');
+    dialog.classList.add('lead-mode');
+    var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
+  }
+
   // wiring — role tiles show the CRM lead form in the popup; back returns to the chooser
   dialog.addEventListener('click', function (e) {
     var tile = e.target.closest('.role-tile');
@@ -314,9 +331,14 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
     if (validRole(roleParam)) { markSeen(roleParam); route(roleParam); return; }   // ?role= deep-link
     if (location.hash && location.hash.length > 1) { markSeen(null); return; }      // any anchor deep-link = intent
     if (!document.documentElement.classList.contains('js')) return;
-    if (seen()) return;
-    // Welcome modal appears 15 seconds after the page loads (once per tab session).
-    openTimer = setTimeout(function () { openTimer = null; if (!seen()) openModal(false); }, 15000);
+    // 1) Role-picker welcome popup — 8 seconds after load (once per tab session)
+    if (!seen()) {
+      openTimer = setTimeout(function () { openTimer = null; if (!seen() && !modal.classList.contains('open')) openModal(false); }, 8000);
+    }
+    // 2) Demo lead-capture popup — 50 seconds after load (once per session; skipped if a role was already chosen or the modal is open)
+    if (!seenDemo()) {
+      demoTimer = setTimeout(function () { demoTimer = null; openDemo(); }, 50000);
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
