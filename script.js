@@ -215,6 +215,8 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
     lastFocused = document.activeElement;
     lockScroll();
     modal.removeAttribute('hidden');
+    dialog.classList.remove('lead-mode');    // always open on the chooser view
+    var _lf = modal.querySelector('.role-lead-iframe'); if (_lf) _lf.src = 'about:blank';
     void dialog.offsetWidth;                 // reflow so the entrance transition runs (skipped under reduced-motion)
     modal.classList.add('open');
     setInert(true);
@@ -250,13 +252,31 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
     safeSet(RKEY, role);                     // remember choice
     markSeen(role);                          // don't re-pop on return
     if (window.dataLayer) { try { window.dataLayer.push({ event: 'role_select', role: role }); } catch (e) {} }
-    window.location.href = r.page;           // go to the product detail page
+    window.location.href = r.page;           // go to the product detail page (used by ?role= deep-link)
+  }
+  // Show the CRM demo/lead form inside the popup for the chosen role → lead goes to the CRM
+  function showLead(role){
+    var r = ROLES[role];
+    if (!r) return;
+    safeSet(RKEY, role);
+    markSeen(role);                          // don't re-pop on return
+    if (window.dataLayer) { try { window.dataLayer.push({ event: 'role_select', role: role, mode: 'popup_lead' }); } catch (e) {} }
+    var frame = modal.querySelector('.role-lead-iframe');
+    if (frame) frame.src = 'https://crm.medplix.ai/?lead&role=' + encodeURIComponent(role) + '&src=popup';
+    var rt = modal.querySelector('[data-lead-role]'); if (rt) rt.textContent = r.biz;
+    var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', r.page);
+    dialog.classList.add('lead-mode');
+    var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
   }
 
-  // wiring — role tiles
+  // wiring — role tiles show the CRM lead form in the popup; back returns to the chooser
   dialog.addEventListener('click', function (e) {
     var tile = e.target.closest('.role-tile');
-    if (tile && tile.dataset.role) route(tile.dataset.role);
+    if (tile && tile.dataset.role) { showLead(tile.dataset.role); return; }
+    if (e.target.closest('[data-role-back]')) {
+      dialog.classList.remove('lead-mode');
+      var f = modal.querySelector('.role-lead-iframe'); if (f) f.src = 'about:blank';
+    }
   });
   // close affordances (backdrop closes only on itself)
   modal.querySelectorAll('[data-role-close]').forEach(function (el) {

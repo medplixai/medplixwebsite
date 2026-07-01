@@ -38,7 +38,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <script>document.documentElement.classList.add('js');</script>
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=17" />
 
   <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
   <script type="application/ld+json">
@@ -1173,12 +1173,24 @@
         </button>
       </div>
       <button type="button" class="role-skip" data-role-close>Just let me explore</button>
+
+      <!-- Lead-capture view: CRM demo/lead form shown after a role is picked -->
+      <div class="role-leadview">
+        <button type="button" class="role-back" data-role-back aria-label="Back to options">← Back</button>
+        <h3 class="role-lead-title">Book your <span data-lead-role>free</span> demo</h3>
+        <p class="role-lead-sub">Leave your details — our team calls you within 24 hours.</p>
+        <div class="role-lead-frame">
+          <iframe class="role-lead-iframe" title="Book a demo — Medplix.AI" loading="lazy" src="about:blank"></iframe>
+        </div>
+        <a class="role-lead-explore" href="#" data-lead-explore>Or explore the full product page →</a>
+      </div>
+
       <nav class="role-nojs" aria-label="Choose your product">
         <a href="product-hms.html">Hospital</a><a href="product-clinic.html">Clinic</a><a href="product-labs.html">Lab / Diagnostics</a><a href="product-pharmacy.html">Pharmacy</a>
       </nav>
     </div>
   </div>
 
-  <script src="script.js?v=10"></script>
+  <script src="script.js?v=11"></script>
 </body>
 </html>
