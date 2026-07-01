@@ -295,8 +295,8 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
     if (location.hash && location.hash.length > 1) { markSeen(null); return; }      // any anchor deep-link = intent
     if (!document.documentElement.classList.contains('js')) return;
     if (seen()) return;
-    // Welcome modal appears 50 seconds after the page loads (once per tab session).
-    openTimer = setTimeout(function () { openTimer = null; if (!seen()) openModal(false); }, 50000);
+    // Welcome modal appears 15 seconds after the page loads (once per tab session).
+    openTimer = setTimeout(function () { openTimer = null; if (!seen()) openModal(false); }, 15000);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
