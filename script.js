@@ -386,13 +386,26 @@ function showSuccess() {
     if (validRole(roleParam)) { markSeen(roleParam); route(roleParam); return; }   // ?role= deep-link
     if (location.hash && location.hash.length > 1) { markSeen(null); return; }      // any anchor deep-link = intent
     if (!document.documentElement.classList.contains('js')) return;
-    // 1) Role-picker welcome popup — 8 seconds after load (once per tab session)
+    // 1) Role-picker welcome popup — at 20s, or once the visitor scrolls ~35% of the page,
+    //    whichever comes first (once per tab session). Scroll depth = engaged reader; timer = fallback.
     if (!seen()) {
-      openTimer = setTimeout(function () { openTimer = null; if (!seen() && !modal.classList.contains('open')) openModal(false); }, 8000);
+      var onDepth = function () {
+        var doc = document.documentElement;
+        var max = doc.scrollHeight - window.innerHeight;
+        if (max > 0 && (window.scrollY || doc.scrollTop || 0) / max >= 0.35) openPicker();
+      };
+      var openPicker = function () {
+        if (openTimer) { clearTimeout(openTimer); openTimer = null; }
+        window.removeEventListener('scroll', onDepth);
+        if (!seen() && !modal.classList.contains('open')) openModal(false);
+      };
+      window.addEventListener('scroll', onDepth, { passive: true });
+      openTimer = setTimeout(openPicker, 20000);
     }
-    // 2) Demo lead-capture popup — 50 seconds after load (once per session; skipped if a role was already chosen or the modal is open)
+    // 2) Demo lead-capture popup — 75 seconds after load (once per session; skipped if a role was
+    //    chosen, the visitor dismissed the first popup, reached the #demo form, or is otherwise engaged)
     if (!seenDemo()) {
-      demoTimer = setTimeout(function () { demoTimer = null; openDemo(); }, 50000);
+      demoTimer = setTimeout(function () { demoTimer = null; openDemo(); }, 75000);
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
