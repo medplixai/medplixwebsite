@@ -1034,3 +1034,15 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
 .role-lead-explore{display:inline-block;margin-top:12px;color:var(--teal-2);font-weight:600;font-size:.9rem}
 .role-lead-explore:hover{text-decoration:underline}
 @media(max-width:520px){.role-lead-iframe{height:64vh}.role-lead-title{font-size:1.2rem}}
+
+/* ===== Hero product strip ===== */
+.heroprod{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:20px 0 2px}
+.heroprod-lead{font-size:.9rem;font-weight:600;color:var(--muted);margin-right:2px}
+.heroprod-pill{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:999px;
+  font-size:.92rem;font-weight:700;color:var(--navy);text-decoration:none;
+  background:rgba(255,255,255,.78);border:1px solid var(--line);
+  box-shadow:0 6px 16px -10px rgba(15,44,77,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,color .2s ease}
+.heroprod-pill:hover{transform:translateY(-2px);border-color:var(--teal);color:var(--teal-2);box-shadow:0 12px 24px -12px rgba(21,160,140,.5)}
+.heroprod-pill span{font-size:1.05rem;line-height:1}
+@media(max-width:600px){.heroprod{gap:8px}.heroprod-lead{width:100%;margin:0 0 2px}.heroprod-pill{padding:8px 13px;font-size:.85rem}}
