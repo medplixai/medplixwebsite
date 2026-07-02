@@ -52,9 +52,12 @@ document.querySelectorAll('.mega-products .mega-card, .mega-bazaar a').forEach(a
 
 // ===== Header shadow on scroll =====
 const header = document.getElementById('header');
-window.addEventListener('scroll', () => {
+const setHeaderState = () => {
   header.style.boxShadow = window.scrollY > 8 ? '0 6px 24px -16px rgba(15,44,77,.35)' : 'none';
-}, { passive: true });
+  header.classList.toggle('scrolled', window.scrollY > 40);
+};
+window.addEventListener('scroll', setHeaderState, { passive: true });
+setHeaderState();
 
 // ===== Lead form: AJAX submit to Web3Forms (leads emailed to you) =====
 const form = document.getElementById('leadForm');

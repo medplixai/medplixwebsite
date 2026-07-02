@@ -66,6 +66,13 @@ h1,h2,h3,h4{line-height:1.15;color:var(--navy);letter-spacing:-.02em}
 /* When the real full-lockup logo.png is present, hide the text wordmark and show the image larger */
 .logo.full-logo .logo-text{display:none}
 .logo.full-logo .logo-mark{width:117px;height:88px;object-fit:contain}
+/* Homepage hero state: large logo while at the top; shrinks to the compact bar on scroll */
+@media(min-width:1121px){
+  #header .header-inner{transition:height .25s ease}
+  #header .logo.full-logo .logo-mark{transition:width .25s ease,height .25s ease}
+  #header:not(.scrolled) .header-inner{height:150px}
+  #header:not(.scrolled) .logo.full-logo .logo-mark{width:187px;height:140px}
+}
 /* footer: same real logo on a white chip so it stays visible on the dark background */
 .footer .logo.full-logo{background:#fff;padding:14px 18px;border-radius:16px;display:inline-flex}
 .footer .logo.full-logo .logo-mark{max-width:200px;max-height:200px}
