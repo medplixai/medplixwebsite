@@ -185,6 +185,10 @@ function showSuccess() {
   var sel = '.sec-head, .eco-card, .app-card, .price-card, .feature-block, .owner-copy, .owner-orbit, ' +
             '.chat-card, .ac-feature, .band-item, .addon, .bazaar-pill, .faq, .gallery, .cta-form, .cta-copy';
   var els = Array.prototype.slice.call(document.querySelectorAll(sel));
+  // also pick up every element that carries .reveal directly in the markup
+  Array.prototype.forEach.call(document.querySelectorAll('.reveal'), function (el) {
+    if (els.indexOf(el) === -1) els.push(el);
+  });
   if (!('IntersectionObserver' in window) || !els.length) {
     els.forEach(function (el) { el.classList.add('reveal', 'in'); });
     return;
