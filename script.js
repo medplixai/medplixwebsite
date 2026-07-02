@@ -18,7 +18,10 @@ document.querySelectorAll('.nav-item.has-menu > .nav-btn').forEach(btn => {
 });
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.nav-item.has-menu')) {
-    document.querySelectorAll('.nav-item.has-menu').forEach(i => i.classList.remove('open'));
+    document.querySelectorAll('.nav-item.has-menu').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.nav-btn')?.setAttribute('aria-expanded', 'false');
+    });
   }
 });
 
@@ -27,7 +30,10 @@ document.querySelectorAll('.nav a').forEach(a =>
   a.addEventListener('click', () => {
     nav.classList.remove('open');
     // close any open mega menu (desktop + mobile) so the click navigates cleanly
-    document.querySelectorAll('.nav-item.has-menu').forEach(i => i.classList.remove('open'));
+    document.querySelectorAll('.nav-item.has-menu').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.nav-btn')?.setAttribute('aria-expanded', 'false');
+    });
     if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     if (hamburger) { hamburger.setAttribute('aria-expanded', 'false'); hamburger.textContent = '☰'; }
   })
@@ -109,7 +115,7 @@ function showSuccess() {
   var el = document.getElementById('typeWord');
   if (!el) return;
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var words = ['modern healthcare', 'Hospitals', 'Clinics', 'Labs', 'Pharmacies', 'Diagnostics'];
+  var words = ['Hospitals', 'Clinics', 'Labs', 'Pharmacies', 'Diagnostics'];
   var w = 0, i = 0, deleting = false;
   function tick(){
     var word = words[w];
@@ -124,13 +130,29 @@ function showSuccess() {
 })();
 
 // ===== Product gallery tabs =====
-document.querySelectorAll('.gtab').forEach(function (tab) {
-  tab.addEventListener('click', function () {
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.gtab'));
+  function activate(tab, focus) {
     var key = tab.getAttribute('data-shot');
-    document.querySelectorAll('.gtab').forEach(function (t) { t.classList.toggle('active', t === tab); });
+    tabs.forEach(function (t) {
+      var on = (t === tab);
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
     document.querySelectorAll('.shot').forEach(function (s) { s.classList.toggle('active', s.getAttribute('data-shot') === key); });
+    if (focus) tab.focus();
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { activate(tab, false); });
+    tab.addEventListener('keydown', function (e) {
+      var dir = (e.key === 'ArrowRight') ? 1 : (e.key === 'ArrowLeft') ? -1 : 0;
+      if (!dir) return;
+      e.preventDefault();
+      activate(tabs[(i + dir + tabs.length) % tabs.length], true);
+    });
   });
-});
+})();
 
 // ===== Scroll reveal (fade-up on enter) =====
 (function () {
@@ -218,7 +240,7 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
     lastFocused = document.activeElement;
     lockScroll();
     modal.removeAttribute('hidden');
-    dialog.classList.remove('lead-mode');    // always open on the chooser view
+    dialog.classList.remove('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleModalTitle');    // always open on the chooser view
     var _lf = modal.querySelector('.role-lead-iframe'); if (_lf) _lf.src = 'about:blank';
     void dialog.offsetWidth;                 // reflow so the entrance transition runs (skipped under reduced-motion)
     modal.classList.add('open');
@@ -237,6 +259,8 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
       var f = (lastFocused && lastFocused.focus) ? lastFocused : document.body;
       try { f.focus({ preventScroll: true }); } catch (e) {}
       markSeen(storedRole());
+      markSeenDemo();                          // explicit dismissal = opt-out of the 50s demo popup too
+      if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
     } finally {
       setTimeout(function () { modal.setAttribute('hidden', ''); isClosing = false; }, 220);
     }
@@ -268,7 +292,7 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
     if (frame) frame.src = 'https://crm.medplix.ai/?lead&role=' + encodeURIComponent(role) + '&src=popup';
     var rt = modal.querySelector('[data-lead-role]'); if (rt) rt.textContent = r.biz;
     var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', r.page);
-    dialog.classList.add('lead-mode');
+    dialog.classList.add('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleLeadTitle');
     var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
   }
 
@@ -276,22 +300,28 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
   function openDemo(){
     if (seenDemo() || storedRole()) return;                 // skip if already shown, or a role was already chosen
     if (modal.classList.contains('open')) return;           // don't interrupt an already-open modal
+    var ae = document.activeElement;                        // typing in the CRM iframe (demo/support form)? don't yank it away
+    if (ae && ae.tagName === 'IFRAME') return;
+    var chat = document.getElementById('chatWin');          // chatting with the AI assistant? don't interrupt
+    if (chat && !chat.hidden) return;
     markSeenDemo();
     openModal(true);                                        // force-open (bypasses the role-picker 'seen')
     var frame = modal.querySelector('.role-lead-iframe');
     if (frame) frame.src = 'https://crm.medplix.ai/?lead&src=popup-50s';
     var rt = modal.querySelector('[data-lead-role]'); if (rt) rt.textContent = 'free';
-    var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', 'index.html#products');
-    dialog.classList.add('lead-mode');
+    var onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
+    var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', (onHome ? '' : 'index.html') + '#products');
+    dialog.classList.add('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleLeadTitle');
     var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
   }
 
   // wiring — role tiles show the CRM lead form in the popup; back returns to the chooser
   dialog.addEventListener('click', function (e) {
+    if (e.target.closest('[data-lead-explore]')) { closeModal(); return; }  // release scroll lock; link then navigates/smooth-scrolls
     var tile = e.target.closest('.role-tile');
     if (tile && tile.dataset.role) { showLead(tile.dataset.role); return; }
     if (e.target.closest('[data-role-back]')) {
-      dialog.classList.remove('lead-mode');
+      dialog.classList.remove('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleModalTitle');
       var f = modal.querySelector('.role-lead-iframe'); if (f) f.src = 'about:blank';
     }
   });
@@ -323,6 +353,31 @@ document.querySelectorAll('.gtab').forEach(function (tab) {
       openModal(true);
     });
   });
+
+  // Engagement suppression — a visitor who clicks any "Book a demo" CTA (or opens
+  // the role picker themselves) has already self-selected; cancel the timed popups.
+  document.addEventListener('click', function (e) {
+    var el = e.target && e.target.closest ? e.target.closest('a[href*="#demo"], [data-open-rolepicker]') : null;
+    if (!el) return;
+    markSeen(storedRole());
+    markSeenDemo();
+    if (openTimer) { clearTimeout(openTimer); openTimer = null; }
+    if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
+  }, true);
+  // If the demo form scrolls into view, the visitor found it on their own — no popup needed.
+  (function () {
+    var demoSec = document.getElementById('demo');
+    if (!demoSec || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        markSeenDemo();
+        if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
+        io.disconnect();
+      });
+    }, { threshold: 0.25 });
+    io.observe(demoSec);
+  })();
 
   // init
   function init(){

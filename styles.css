@@ -17,8 +17,8 @@
   --shadow-sm:0 8px 24px -14px rgba(15,44,77,.25);
   --r:18px;
   --maxw:1200px;
-  --nav-h:168px;           /* single-row nav height (fits 200x150 logo) */
-  --header-h:174px;        /* total sticky header incl. accent line (scroll offset) */
+  --nav-h:104px;           /* single-row nav height (fits compact logo) */
+  --header-h:109px;        /* total sticky header incl. accent line (scroll offset) */
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 14px)}
@@ -38,6 +38,7 @@ h1,h2,h3,h4{line-height:1.15;color:var(--navy);letter-spacing:-.02em}
 .grad-t{color:var(--teal)}
 /* animated typed keyword (eka.care style) */
 .type-word{font-weight:800}
+.type-line{display:block;min-height:1.55em}
 .type-caret{color:var(--teal);font-weight:600;animation:caretBlink 1s step-end infinite;margin-left:1px}
 @keyframes caretBlink{50%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.grad,.type-word{animation:none;background-position:0 50%}.type-caret{animation:none}}
@@ -64,7 +65,7 @@ h1,h2,h3,h4{line-height:1.15;color:var(--navy);letter-spacing:-.02em}
 .logo-mark{width:44px;height:44px}
 /* When the real full-lockup logo.png is present, hide the text wordmark and show the image larger */
 .logo.full-logo .logo-text{display:none}
-.logo.full-logo .logo-mark{width:auto;height:auto;max-width:200px;max-height:150px;object-fit:contain}
+.logo.full-logo .logo-mark{width:117px;height:88px;object-fit:contain}
 /* footer: same real logo on a white chip so it stays visible on the dark background */
 .footer .logo.full-logo{background:#fff;padding:14px 18px;border-radius:16px;display:inline-flex}
 .footer .logo.full-logo .logo-mark{max-width:200px;max-height:200px}
@@ -88,7 +89,7 @@ h1,h2,h3,h4{line-height:1.15;color:var(--navy);letter-spacing:-.02em}
 .hp-ring{display:inline-grid;place-items:center;font-size:.9rem}
 @keyframes phonePulse{0%{box-shadow:0 0 0 0 rgba(21,160,140,.45)}70%{box-shadow:0 0 0 9px rgba(21,160,140,0)}100%{box-shadow:0 0 0 0 rgba(21,160,140,0)}}
 .nav-drawer-extra{display:none}
-.hamburger{display:none;font-size:1.6rem;background:none;border:none;cursor:pointer;color:var(--navy);margin-left:auto}
+.hamburger{display:none;font-size:1.6rem;background:none;border:none;cursor:pointer;color:var(--navy);margin-left:auto;min-width:44px;min-height:44px;padding:8px;place-items:center;border-radius:10px}
 
 /* thin highlighted accent line (no text) */
 .header-accent{height:5px;background:var(--grad-teal)}
@@ -99,6 +100,10 @@ h1,h2,h3,h4{line-height:1.15;color:var(--navy);letter-spacing:-.02em}
   border-radius:18px;box-shadow:var(--shadow);padding:18px;opacity:0;visibility:hidden;
   transform:translateY(8px);transition:.18s ease;z-index:70;width:620px}
 .nav-item.open .mega,.nav-item:hover .mega{opacity:1;visibility:visible;transform:translateY(0)}
+/* invisible hover bridge spanning the 14px gap so slow/diagonal pointer moves don't dismiss the menu */
+@media(min-width:1121px){
+  .nav-item.has-menu::after{content:"";position:absolute;left:0;right:0;top:100%;height:14px}
+}
 .nav-item.has-menu.suppress-hover .mega{opacity:0 !important;visibility:hidden !important}
 .mega-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .mega-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:6px 6px 8px}
@@ -321,7 +326,7 @@ h1,h2,h3,h4{line-height:1.15;color:var(--navy);letter-spacing:-.02em}
 .addon em{font-style:normal;font-weight:800;color:var(--teal-2);font-size:1.1rem}
 
 /* APPS */
-.apps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.apps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
 .app-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;box-shadow:var(--shadow-sm);transition:.2s}
 .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .app-ico{width:54px;height:54px;display:grid;place-items:center;border-radius:16px;background:var(--grad-teal);font-size:1.5rem;margin-bottom:16px}
@@ -381,6 +386,8 @@ h1,h2,h3,h4{line-height:1.15;color:var(--navy);letter-spacing:-.02em}
 .foot-apps{margin-top:24px}
 .foot-apps-label{display:block;font-size:.72rem;color:#7e9bb6;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:11px}
 .foot-apps-badges{display:flex;gap:10px;flex-wrap:wrap}
+.foot-apps-link{display:inline-flex;align-items:center;background:#0c1a2b;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 16px;color:#fff;font-weight:700;font-size:.9rem;transition:.18s}
+.foot-apps-link:hover{border-color:var(--teal-3);background:#10243a;transform:translateY(-2px)}
 .store-badge{display:inline-flex;align-items:center;gap:10px;background:#0c1a2b;border:1px solid rgba(255,255,255,.18);
   border-radius:12px;padding:8px 15px;transition:.18s}
 .store-badge:hover{border-color:var(--teal-3);background:#10243a;transform:translateY(-2px)}
@@ -694,9 +701,13 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
 /* mobile bottom-sheet */
 @media(max-width:600px){
   .js #roleModal{align-items:flex-end;padding:0}
-  .role-dialog{width:100%;max-height:88vh;border-radius:26px 26px 0 0;transform:translateY(100%)}
+  .role-dialog{width:100%;max-height:88vh;border-radius:26px 26px 0 0;transform:translateY(100%);padding:22px 20px 18px}
   #roleModal.open .role-dialog{transform:translateY(0)}
-  .role-grid{grid-template-columns:1fr}
+  .role-eyebrow{display:none}
+  .role-grid{grid-template-columns:1fr;gap:10px}
+  .role-tile{flex-direction:row;align-items:center;gap:12px;padding:12px 14px}
+  .role-ico{width:38px;height:38px;margin-bottom:0;flex-shrink:0}
+  .role-tile-sub{display:none}
 }
 /* scroll lock + hide floating affordances while open */
 .role-lock{overflow:hidden}
@@ -715,7 +726,7 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
   :root{--nav-h:104px;--header-h:109px}
   .logo.full-logo .logo-mark{max-width:150px;max-height:88px}
   .header-cta{display:none}
-  .hamburger{display:block}
+  .hamburger{display:grid}
   .nav{position:fixed;inset:var(--header-h) 0 auto 0;flex-direction:column;align-items:stretch;background:#fff;
     padding:16px;gap:6px;margin:0;max-height:calc(100vh - var(--header-h));overflow-y:auto;
     transform:translateY(-12px);opacity:0;visibility:hidden;transition:.2s;box-shadow:var(--shadow)}
@@ -781,10 +792,13 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
     background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid var(--line);box-shadow:0 -10px 26px -18px rgba(15,44,77,.4)}
   .mcb-demo{flex:1}
   .mcb-call{flex:0 0 auto;padding:13px 18px}
-  .whatsapp{bottom:84px}
+  .whatsapp{bottom:156px}
   body{padding-bottom:72px}
 }
 @media(max-width:600px){
+  /* compact phone header */
+  :root{--nav-h:64px;--header-h:69px}
+  .header .logo.full-logo .logo-mark{width:69px;height:52px}
   .shot-stats{grid-template-columns:1fr 1fr}
   .gallery-tabs{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;-webkit-overflow-scrolling:touch}
   .gtab{flex:0 0 auto;font-size:.84rem;padding:9px 13px}
@@ -1031,9 +1045,20 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
 .role-lead-sub{color:var(--muted);font-size:.94rem;margin:0 0 14px}
 .role-lead-frame{width:100%;display:flex;justify-content:center}
 .role-lead-iframe{width:100%;max-width:520px;height:min(560px,58vh);border:0;border-radius:14px;background:#fff;box-shadow:0 12px 34px -16px rgba(15,44,77,.35)}
-.role-lead-explore{display:inline-block;margin-top:12px;color:var(--teal-2);font-weight:600;font-size:.9rem}
+.role-lead-call{margin:12px 0 0;color:var(--muted);font-size:.92rem}
+.role-lead-call a{color:var(--teal-2);font-weight:700;white-space:nowrap}
+.role-lead-call a:hover{text-decoration:underline}
+.role-lead-explore{display:inline-block;margin-top:8px;color:var(--teal-2);font-weight:600;font-size:.9rem}
 .role-lead-explore:hover{text-decoration:underline}
-@media(max-width:520px){.role-lead-iframe{height:64vh}.role-lead-title{font-size:1.2rem}}
+@media(max-width:520px){.role-lead-title{font-size:1.2rem}}
+/* ≤600px lead-mode: fill the bottom sheet and let the iframe flex — form gets max height, dialog never double-scrolls */
+@media(max-width:600px){
+  .role-dialog.lead-mode{display:flex;flex-direction:column;height:92vh;height:92dvh;max-height:none;padding:14px 14px 12px}
+  .role-dialog.lead-mode .role-leadview{display:flex;flex-direction:column;flex:1;min-height:0}
+  .role-dialog.lead-mode .role-lead-sub{margin:0 0 8px}
+  .role-dialog.lead-mode .role-lead-frame{flex:1;min-height:0}
+  .role-dialog.lead-mode .role-lead-iframe{height:100%;max-height:none}
+}
 
 /* ===== Hero product strip ===== */
 .heroprod{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:20px 0 2px}
