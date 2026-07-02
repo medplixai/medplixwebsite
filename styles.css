@@ -1102,3 +1102,8 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
 .crm-retry{background:none;border:0;color:var(--teal-2);font-weight:700;font-size:.9rem;cursor:pointer}
 .crm-retry:hover{text-decoration:underline}
 
+/* swipe hint for horizontally scrollable comparison tables (small screens only) */
+.table-swipe-hint{display:none;color:var(--muted);font-size:.82rem;font-weight:600;text-align:right;margin:0 0 6px;animation:swipehint 1.6s ease-in-out 2}
+@keyframes swipehint{0%,100%{transform:translateX(0)}50%{transform:translateX(-6px)}}
+@media(max-width:880px){.table-swipe-hint{display:block}}
+
