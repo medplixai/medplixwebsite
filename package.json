@@ -1,0 +1,8 @@
+{
+  "name": "medplix-website",
+  "private": true,
+  "description": "Medplix.AI marketing site — static pages + /api/chat serverless function",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.88.0"
+  }
+}

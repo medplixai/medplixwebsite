@@ -496,13 +496,47 @@ function showSuccess() {
       var res = getReply(q); addMsg(res.r, 'bot'); setChips(res.c);
     }, 480 + Math.random() * 360);
   }
+  // Real AI replies via /api/chat (Claude, server-side key). Falls back to the
+  // local KB bot if the endpoint is unavailable (no key configured, error, timeout).
+  var history = [];
+  function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'); }
+  function askAI(q) {
+    var t = typing();
+    var ctrl = ('AbortController' in window) ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 20000) : null;
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history.slice(-10) }),
+      signal: ctrl ? ctrl.signal : undefined
+    })
+      .then(function (r) { if (!r.ok) throw new Error('api ' + r.status); return r.json(); })
+      .then(function (data) {
+        if (timer) clearTimeout(timer);
+        var reply = (data && data.reply) ? String(data.reply) : '';
+        if (!reply) throw new Error('empty');
+        t.remove();
+        history.push({ role: 'assistant', content: reply });
+        if (history.length > 12) history = history.slice(-12);
+        addMsg(escapeHtml(reply), 'bot');
+        setChips(['Pricing', 'Book a demo', 'WhatsApp us']);
+        mpxTrack('chat_ai_reply');
+      })
+      .catch(function () {
+        if (timer) clearTimeout(timer);
+        t.remove();
+        var res = getReply(q); addMsg(res.r, 'bot'); setChips(res.c);
+      });
+  }
   function send(text) {
     text = (text || '').trim(); if (!text) return;
     var low = text.toLowerCase();
     if (VIEW[low]) { addMsg(text, 'user'); window.location.href = VIEW[low]; return; }
     if (low === 'book a demo') { addMsg(text, 'user'); setChips([]); var td = typing(); setTimeout(function () { td.remove(); addMsg("Great! Taking you to the demo form 👇 Fill it in and our team calls within 24 hours.", 'bot'); setTimeout(function () { closeChat(); document.documentElement.style.scrollBehavior = 'smooth'; location.hash = '#demo'; }, 900); }, 480); return; }
     if (low.indexOf('whatsapp') > -1 && low.length < 14) { addMsg(text, 'user'); window.open('https://wa.me/919540889999?text=Hi%20Medplix%2C%20I%20want%20to%20know%20more%20about%20Medplix.AI%20for%20my%20facility.', '_blank', 'noopener'); var tw = typing(); setTimeout(function () { tw.remove(); addMsg("Opening WhatsApp… 💬 You can also call <a href='tel:+919540889999'>95408 89999</a>.", 'bot'); setChips(['Pricing', 'Book a demo']); }, 400); return; }
-    addMsg(text, 'user'); setChips([]); botSay(text);
+    addMsg(text, 'user'); setChips([]);
+    history.push({ role: 'user', content: text.slice(0, 1200) });
+    askAI(text);
   }
   function openChat() { win.hidden = false; document.body.classList.add('chat-open'); fab.setAttribute('aria-expanded', 'true'); if (!started) { started = true; botSay('__greet'); } setTimeout(function () { input.focus(); }, 120); }
   function closeChat() { win.hidden = true; document.body.classList.remove('chat-open'); fab.setAttribute('aria-expanded', 'false'); }
