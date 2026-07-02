@@ -25,3 +25,14 @@ dist/
 # Logs & temp
 *.log
 *.tmp
+
+# Non-website media — never deploy (clinic photos live in MEDPLIX-assets-archive)
+assets/BEFORE AFTER/
+assets/Medicare Skin*/
+assets/untitled folder/
+assets/*.xlsx
+assets/*.HEIC
+assets/icon new.PNG
+assets/couple hero photo.PNG
+assets/front page beautiful lady image.PNG
+assets/hair transplant.png
