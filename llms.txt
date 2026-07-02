@@ -1,0 +1,33 @@
+# Medplix.AI
+
+> AI-powered hospital, clinic, lab & pharmacy management software for India. Cloud SaaS — works anywhere in India with fully remote demo, onboarding, data migration and staff training. INR pricing, GST-compliant billing.
+
+Medplix.AI ("Your Intelligent HealthTech Partner") is a cloud-based healthcare management platform for Indian healthcare businesses: hospitals, clinics, laboratories/diagnostic centres and pharmacies. It covers OPD, IPD, ICU, OT, laboratory (LIS), pharmacy, GST-ready billing, HR/payroll, owner dashboards & analytics, wholesale procurement (Medplix Bazaar) and AI Connect — a secure, read-only, tenant-isolated connector that links an owner's business data to AI assistants.
+
+## Products & pricing (per month, billed annually, excluding GST)
+
+- [Medplix HMS — Complete Hospital Suite](https://www.medplix.ai/product-hms.html): OPD, IPD, ICU/OT, lab, pharmacy, billing, HR & marketing. ₹1,250/mo.
+- [Medplix Clinic](https://www.medplix.ai/product-clinic.html): appointments, EMR, prescriptions, lab, pharmacy & daycare. ₹499/mo.
+- [Medplix Labs (LIS)](https://www.medplix.ai/product-labs.html): billing, sample tracking, auto reports & referrals. ₹499/mo.
+- [Medplix Pharmacy](https://www.medplix.ai/product-pharmacy.html): POS billing, inventory, batch & expiry, GST accounting. ₹499/mo.
+
+Free 1-month trial, no card required. Setup, data migration and staff training are included and done remotely.
+
+## Key facts
+
+- Made for India: INR pricing, GST-compliant billing in every state, multi-branch support across cities.
+- Security: encryption in transit and at rest, automatic daily backups, role-based access, audit trails, tenant isolation. Data is exportable anytime (no lock-in).
+- Medplix.AI is a software provider; it does not provide medical advice.
+
+## Contact
+
+- Website: https://www.medplix.ai/
+- Book a demo: https://www.medplix.ai/#demo
+- Phone / WhatsApp: +91 95408 89999
+- Email: support@medplix.ai
+
+## Policies
+
+- [Terms & Conditions](https://www.medplix.ai/terms.html)
+- [Privacy Policy](https://www.medplix.ai/privacy.html)
+- [Data Security Policy](https://www.medplix.ai/data-security.html)

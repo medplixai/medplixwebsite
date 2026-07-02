@@ -1,3 +1,26 @@
+// ===== Analytics bootstrap: dataLayer + first-touch attribution =====
+window.dataLayer = window.dataLayer || [];
+function mpxTrack(event, data) { try { window.dataLayer.push(Object.assign({ event: event }, data || {})); } catch (e) {} }
+(function captureAttribution() {
+  try {
+    if (sessionStorage.getItem('mpx_attr')) return;
+    var p = new URLSearchParams(location.search), keep = {};
+    ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','fbclid'].forEach(function (k) {
+      var v = p.get(k); if (v) keep[k] = v.slice(0, 120);
+    });
+    if (document.referrer) keep.ref = document.referrer.slice(0, 200);
+    sessionStorage.setItem('mpx_attr', JSON.stringify(keep));
+  } catch (e) {}
+})();
+function withAttribution(url) {
+  try {
+    var a = JSON.parse(sessionStorage.getItem('mpx_attr') || '{}');
+    var qs = Object.keys(a).filter(function (k) { return k !== 'ref'; })
+      .map(function (k) { return k + '=' + encodeURIComponent(a[k]); }).join('&');
+    return qs ? url + (url.indexOf('?') > -1 ? '&' : '?') + qs : url;
+  } catch (e) { return url; }
+}
+
 // ===== Mobile nav toggle =====
 const hamburger = document.getElementById('hamburger');
 const nav = document.getElementById('nav');
@@ -109,7 +132,7 @@ function showSuccess() {
       '<div class="fs-ico">✅</div>' +
       '<h3>Thank you!</h3>' +
       '<p>Your demo request is in. Our team will reach out within 24 hours.</p>' +
-      '<p style="margin-top:10px"><a class="cta-call" href="https://wa.me/919540889999" target="_blank" rel="noopener" style="color:#0d8a78;font-weight:700">Or message us on WhatsApp →</a></p>' +
+      '<p style="margin-top:10px"><a class="cta-call" href="https://wa.me/919540889999?text=Hi%20Medplix%2C%20I%20want%20a%20free%20demo%20for%20my%20facility." target="_blank" rel="noopener" style="color:#0d8a78;font-weight:700">Or message us on WhatsApp →</a></p>' +
     '</div>';
 }
 
@@ -292,7 +315,7 @@ function showSuccess() {
     markSeen(role);                          // don't re-pop on return
     if (window.dataLayer) { try { window.dataLayer.push({ event: 'role_select', role: role, mode: 'popup_lead' }); } catch (e) {} }
     var frame = modal.querySelector('.role-lead-iframe');
-    if (frame) frame.src = 'https://crm.medplix.ai/?lead&role=' + encodeURIComponent(role) + '&src=popup';
+    if (frame) { frame.src = withAttribution('https://crm.medplix.ai/?lead&role=' + encodeURIComponent(role) + '&src=popup'); if (window.mpxWatchCrmIframe) window.mpxWatchCrmIframe(frame); }
     var rt = modal.querySelector('[data-lead-role]'); if (rt) rt.textContent = r.biz;
     var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', r.page);
     dialog.classList.add('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleLeadTitle');
@@ -310,10 +333,12 @@ function showSuccess() {
     markSeenDemo();
     openModal(true);                                        // force-open (bypasses the role-picker 'seen')
     var frame = modal.querySelector('.role-lead-iframe');
-    if (frame) frame.src = 'https://crm.medplix.ai/?lead&src=popup-50s';
+    if (frame) { frame.src = withAttribution('https://crm.medplix.ai/?lead&src=popup-50s'); if (window.mpxWatchCrmIframe) window.mpxWatchCrmIframe(frame); }
     var rt = modal.querySelector('[data-lead-role]'); if (rt) rt.textContent = 'free';
     var onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
     var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', (onHome ? '' : 'index.html') + '#products');
+    var wl = modal.querySelector('.role-lead-call a[href^="https://wa.me"]');
+    if (wl) wl.href = 'https://wa.me/919540889999?text=' + encodeURIComponent('Hi Medplix, I run a ' + r.biz + ' and want a free demo.');
     dialog.classList.add('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleLeadTitle');
     var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
   }
@@ -472,7 +497,7 @@ function showSuccess() {
     var low = text.toLowerCase();
     if (VIEW[low]) { addMsg(text, 'user'); window.location.href = VIEW[low]; return; }
     if (low === 'book a demo') { addMsg(text, 'user'); setChips([]); var td = typing(); setTimeout(function () { td.remove(); addMsg("Great! Taking you to the demo form 👇 Fill it in and our team calls within 24 hours.", 'bot'); setTimeout(function () { closeChat(); document.documentElement.style.scrollBehavior = 'smooth'; location.hash = '#demo'; }, 900); }, 480); return; }
-    if (low.indexOf('whatsapp') > -1 && low.length < 14) { addMsg(text, 'user'); window.open('https://wa.me/919540889999', '_blank', 'noopener'); var tw = typing(); setTimeout(function () { tw.remove(); addMsg("Opening WhatsApp… 💬 You can also call <a href='tel:+919540889999'>95408 89999</a>.", 'bot'); setChips(['Pricing', 'Book a demo']); }, 400); return; }
+    if (low.indexOf('whatsapp') > -1 && low.length < 14) { addMsg(text, 'user'); window.open('https://wa.me/919540889999?text=Hi%20Medplix%2C%20I%20want%20to%20know%20more%20about%20Medplix.AI%20for%20my%20facility.', '_blank', 'noopener'); var tw = typing(); setTimeout(function () { tw.remove(); addMsg("Opening WhatsApp… 💬 You can also call <a href='tel:+919540889999'>95408 89999</a>.", 'bot'); setChips(['Pricing', 'Book a demo']); }, 400); return; }
     addMsg(text, 'user'); setChips([]); botSay(text);
   }
   function openChat() { win.hidden = false; document.body.classList.add('chat-open'); fab.setAttribute('aria-expanded', 'true'); if (!started) { started = true; botSay('__greet'); } setTimeout(function () { input.focus(); }, 120); }
@@ -487,3 +512,60 @@ function showSuccess() {
 // ===== Footer year (keeps copyright current) =====
 const yearEl = document.querySelector('.foot-bottom span');
 if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().getFullYear());
+
+// ===== Launch instrumentation: attribution passthrough, funnel events, CRM iframe watchdog =====
+(function () {
+  // CRM iframe watchdog: if a form doesn't load within 8s, offer direct contact instead
+  function watch(f) {
+    if (!f || f._mpxWatched) return; f._mpxWatched = true;
+    var done = false;
+    f.addEventListener('load', function () { if ((f.getAttribute('src') || '').indexOf('crm.medplix.ai') > -1) done = true; });
+    setTimeout(function () {
+      if (done || (f.getAttribute('src') || '').indexOf('crm.medplix.ai') === -1) return;
+      var fb = document.createElement('div');
+      fb.className = 'crm-fallback';
+      fb.innerHTML = '<h3>Form is taking a moment to load</h3>' +
+        '<p>You can reach us right now instead:</p>' +
+        '<div class="crm-fallback-actions">' +
+        '<a class="btn btn-primary" href="https://wa.me/919540889999?text=Hi%20Medplix%2C%20I%20want%20a%20free%20demo%20for%20my%20facility." target="_blank" rel="noopener">💬 WhatsApp us</a>' +
+        '<a class="btn btn-outline" href="tel:+919540889999">📞 Call 95408 89999</a>' +
+        '<a class="btn btn-outline" href="mailto:support@medplix.ai">✉️ Email us</a></div>' +
+        '<button type="button" class="crm-retry">Try the form again →</button>';
+      f.style.display = 'none';
+      f.parentNode.appendChild(fb);
+      fb.querySelector('.crm-retry').addEventListener('click', function () {
+        fb.remove(); f.style.display = '';
+        var s = f.src; f.src = 'about:blank'; setTimeout(function () { f.src = s; }, 50);
+      });
+      mpxTrack('crm_iframe_timeout');
+    }, 8000);
+  }
+  window.mpxWatchCrmIframe = watch;
+
+  // static CRM iframes (#demo lead form, support portal): attribution + watchdog
+  document.querySelectorAll('iframe[src*="crm.medplix.ai"]').forEach(function (f) {
+    f.src = withAttribution(f.src);
+    watch(f);
+  });
+
+  // funnel events
+  document.addEventListener('click', function (e) {
+    if (!e.target || !e.target.closest) return;
+    var wa = e.target.closest('a[href^="https://wa.me"]');
+    if (wa) mpxTrack('whatsapp_click');
+    if (e.target.closest('a[href^="tel:"]')) mpxTrack('call_click');
+    var pill = e.target.closest('.heroprod-pill');
+    if (pill) mpxTrack('hero_product_click', { product: (pill.textContent || '').trim() });
+  }, true);
+  if ('IntersectionObserver' in window) {
+    [['demo', 'demo_view'], ['pricing', 'pricing_view']].forEach(function (pair) {
+      var el = document.getElementById(pair[0]);
+      if (!el) return;
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (en) { if (en.isIntersecting) { mpxTrack(pair[1]); io.disconnect(); } });
+      }, { threshold: 0.25 });
+      io.observe(el);
+    });
+  }
+})();
+
