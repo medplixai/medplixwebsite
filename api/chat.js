@@ -28,7 +28,12 @@ RULES:
 - Reply in the language the user writes in (English, Telugu, Hindi, or any Indian language). Keep answers short — 1-4 sentences, plain text (no markdown headings). Use ₹ for prices.
 - Never invent prices, discounts, certifications, customer names or features. If unsure, say the team can confirm on WhatsApp/phone (+91 95408 89999) or in a demo.
 - You are a website assistant, not a medical professional — never give medical advice.
-- When relevant, gently encourage booking a free demo.`;
+- When relevant, gently encourage booking a free demo.
+- At the very end of EVERY reply, append exactly one line in this format (it is stripped by our server before display — the visitor never sees it):
+<meta>{"intent":"hot|warm|info","wa":"...","note":"..."}</meta>
+  "intent": "hot" ONLY if this message asks about pricing, plans, buying, the free trial, or booking a demo; "warm" if they are evaluating features for their own facility; otherwise "info".
+  "wa": a ready-to-send WhatsApp message (max 200 chars) written in the visitor's own language, first person, summarising their facility and interest, e.g. "Hi Medplix, I run a 30-bed hospital and want an HMS demo".
+  "note": a short English note for our sales team (max 120 chars), e.g. "Asked HMS pricing for 30-bed hospital; wants trial".`;
 
 // Best-effort per-instance rate limit (resets on cold start)
 const hits = new Map();
@@ -76,6 +81,15 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'bad_request' });
   }
 
+  // Log the question (PII-stripped) so real visitor questions can feed future FAQ updates
+  try {
+    const q = messages[messages.length - 1].content
+      .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[email]')
+      .replace(/\+?\d[\d\s-]{7,}\d/g, '[phone]')
+      .slice(0, 300);
+    console.log('chat_q', JSON.stringify(q));
+  } catch (e) {}
+
   const client = new Anthropic();
   try {
     const response = await client.messages.create({
@@ -84,13 +98,29 @@ module.exports = async (req, res) => {
       system: SYSTEM_PROMPT,
       messages,
     });
-    const reply = response.content
+    let reply = response.content
       .filter((b) => b.type === 'text')
       .map((b) => b.text)
       .join('\n')
       .trim();
+    // Extract + strip the machine-readable intent envelope (widget uses it for lead handoff)
+    let intent = null, wa = null, note = null;
+    const metaMatch = reply.match(/<meta>\s*([\s\S]*?)\s*<\/meta>/);
+    if (metaMatch) {
+      reply = reply.replace(metaMatch[0], '').trim();
+      try {
+        const meta = JSON.parse(metaMatch[1]);
+        if (meta && typeof meta === 'object') {
+          if (['hot', 'warm', 'info'].includes(meta.intent)) intent = meta.intent;
+          if (typeof meta.wa === 'string' && meta.wa.trim()) wa = meta.wa.trim().slice(0, 200);
+          if (typeof meta.note === 'string' && meta.note.trim()) note = meta.note.trim().slice(0, 120);
+        }
+      } catch (e) { /* malformed meta → plain reply, widget unaffected */ }
+    }
     if (!reply) return res.status(502).json({ error: 'empty_reply' });
-    return res.status(200).json({ reply });
+    const payload = { reply };
+    if (intent) { payload.intent = intent; if (wa) payload.wa = wa; if (note) payload.note = note; }
+    return res.status(200).json(payload);
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {
       return res.status(429).json({ error: 'upstream_rate_limited' });

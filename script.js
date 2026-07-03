@@ -312,16 +312,19 @@ function showSuccess() {
     window.location.href = r.page;           // go to the product detail page (used by ?role= deep-link)
   }
   // Show the CRM demo/lead form inside the popup for the chosen role → lead goes to the CRM
-  function showLead(role){
+  function showLead(role, srcTag, note){
     var r = ROLES[role];
     if (!r) return;
     safeSet(RKEY, role);
     markSeen(role);                          // don't re-pop on return
     if (window.dataLayer) { try { window.dataLayer.push({ event: 'role_select', role: role, mode: 'popup_lead' }); } catch (e) {} }
     var frame = modal.querySelector('.role-lead-iframe');
-    if (frame) { frame.src = withAttribution('https://crm.medplix.ai/?lead&role=' + encodeURIComponent(role) + '&src=popup'); if (window.mpxWatchCrmIframe) window.mpxWatchCrmIframe(frame); }
+    if (frame) { frame.src = withAttribution('https://crm.medplix.ai/?lead&role=' + encodeURIComponent(role) + '&src=' + (srcTag || 'popup') + (note ? '&note=' + encodeURIComponent(String(note).slice(0, 120)) : '')); if (window.mpxWatchCrmIframe) window.mpxWatchCrmIframe(frame); }
     var rt = modal.querySelector('[data-lead-role]'); if (rt) rt.textContent = r.biz;
     var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', r.page);
+    var wl = modal.querySelector('.role-lead-call a[href^="https://wa.me"]');
+    if (wl) wl.href = 'https://wa.me/919540889999?text=' + encodeURIComponent('Hi Medplix, I run a ' + r.biz + ' and want a free demo.');
+    dialog.classList.remove('quiz-mode');
     dialog.classList.add('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleLeadTitle');
     var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
   }
@@ -342,16 +345,93 @@ function showSuccess() {
     var onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
     var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', (onHome ? '' : 'index.html') + '#products');
     var wl = modal.querySelector('.role-lead-call a[href^="https://wa.me"]');
-    if (wl) wl.href = 'https://wa.me/919540889999?text=' + encodeURIComponent('Hi Medplix, I run a ' + r.biz + ' and want a free demo.');
+    if (wl) wl.href = 'https://wa.me/919540889999?text=' + encodeURIComponent('Hi Medplix, I want a free demo for my facility.');
     dialog.classList.add('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleLeadTitle');
     var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
   }
+
+  // ---- Plan Finder quiz: 2 enum questions → deterministic plan estimate (published prices only) ----
+  var PLANS = {
+    hospital: { name: 'Medplix HMS — Complete Hospital Suite', base: 1250 },
+    clinic:   { name: 'Medplix Clinic', base: 499 },
+    lab:      { name: 'Medplix Labs (LIS)', base: 499 },
+    pharmacy: { name: 'Medplix Pharmacy', base: 499 }
+  };
+  var SIZEQ = {
+    hospital: { q: 'How big is your hospital?', opts: ['Under 10 beds', '10–50 beds', '50+ beds'] },
+    clinic:   { q: 'How many branches do you run?', opts: ['1', '2–3', '4+'] },
+    lab:      { q: 'How many branches do you run?', opts: ['1', '2–3', '4+'] },
+    pharmacy: { q: 'How many branches do you run?', opts: ['1', '2–3', '4+'] }
+  };
+  var quizRole = null, quizSize = null;
+  var inr = function (n) { return '₹' + n.toLocaleString('en-IN'); };
+  function showQuiz(role){
+    var r = ROLES[role], p = PLANS[role], sq = SIZEQ[role];
+    if (!r || !p) { showLead(role); return; }
+    quizRole = role; quizSize = null;
+    safeSet(RKEY, role); markSeen(role);
+    if (window.dataLayer) { try { window.dataLayer.push({ event: 'role_select', role: role, mode: 'popup_quiz' }); } catch (e) {} }
+    var biz = modal.querySelector('[data-quiz-biz]'); if (biz) biz.textContent = r.biz;
+    var q1 = modal.querySelector('[data-quiz-q1]'); if (q1) q1.textContent = sq.q;
+    var opts1 = modal.querySelector('[data-quiz-opts1]');
+    if (opts1) {
+      opts1.innerHTML = '';
+      sq.opts.forEach(function (label) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'role-quiz-opt'; b.textContent = label;
+        b.addEventListener('click', function () {
+          quizSize = label;
+          modal.querySelector('[data-quiz-step="1"]').hidden = true;
+          modal.querySelector('[data-quiz-step="2"]').hidden = false;
+        });
+        opts1.appendChild(b);
+      });
+    }
+    modal.querySelector('[data-quiz-step="1"]').hidden = false;
+    modal.querySelector('[data-quiz-step="2"]').hidden = true;
+    modal.querySelector('.role-quiz-result').hidden = true;
+    dialog.classList.remove('lead-mode');
+    dialog.classList.add('quiz-mode');
+  }
+  function quizResult(logins){
+    var r = ROLES[quizRole], p = PLANS[quizRole];
+    if (!r || !p) return;
+    var total = p.base + logins * 299;
+    var from = logins >= 3;
+    var lines = '<div>' + p.name.split(' — ')[0] + ' base — ' + inr(p.base) + '/mo</div>';
+    if (logins > 0) lines += '<div>' + (from ? '3+' : '2') + ' extra logins × ₹299 — ' + (from ? 'from ' : '') + inr(logins * 299) + '/mo</div>';
+    modal.querySelector('[data-quiz-plan]').textContent = 'Your plan: ' + p.name;
+    modal.querySelector('[data-quiz-lines]').innerHTML = lines;
+    modal.querySelector('[data-quiz-total]').textContent = '≈ ' + (from ? 'from ' : '') + inr(total) + '/month';
+    var waMsg = 'Hi Medplix, I run a ' + (quizSize || '') + ' ' + r.biz.toLowerCase() + (logins ? ' and need ' + (from ? '3+' : '1–2') + ' extra logins' : '') + ' — interested in ' + p.name.split(' — ')[0] + ' (' + inr(total) + '/mo). Please share demo details.';
+    var wa = modal.querySelector('[data-quiz-wa]');
+    if (wa) wa.href = 'https://wa.me/919540889999?text=' + encodeURIComponent(waMsg);
+    modal.querySelector('[data-quiz-step="2"]').hidden = true;
+    modal.querySelector('.role-quiz-result').hidden = false;
+    markSeenDemo();
+    mpxTrack('quiz_complete', { role: quizRole, size: quizSize, logins: logins });
+    quizNote = 'Quiz: ' + r.biz + ', ' + (quizSize || '?') + (logins ? ', ' + (from ? '3+' : '1–2') + ' extra logins' : '') + ', est ' + inr(total) + '/mo';
+  }
+  var quizNote = '';
+  dialog.addEventListener('click', function (e) {
+    var lg = e.target.closest('[data-logins]');
+    if (lg) { quizResult(parseInt(lg.dataset.logins, 10)); return; }
+    if (e.target.closest('[data-quiz-trial]')) { dialog.classList.remove('quiz-mode'); showLead(quizRole, 'quiz', quizNote); return; }
+    if (e.target.closest('[data-quiz-skip]')) { dialog.classList.remove('quiz-mode'); showLead(quizRole, 'quiz-skip'); return; }
+    if (e.target.closest('[data-quiz-back]')) { dialog.classList.remove('quiz-mode'); dialog.setAttribute('aria-labelledby', 'roleModalTitle'); return; }
+  });
+
+  // An engaged (hot) AI-chat conversation counts as demo engagement — never fire the timed popup over it
+  document.addEventListener('mpx:hot-intent', function () {
+    markSeenDemo();
+    if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
+  });
 
   // wiring — role tiles show the CRM lead form in the popup; back returns to the chooser
   dialog.addEventListener('click', function (e) {
     if (e.target.closest('[data-lead-explore]')) { closeModal(); return; }  // release scroll lock; link then navigates/smooth-scrolls
     var tile = e.target.closest('.role-tile');
-    if (tile && tile.dataset.role) { showLead(tile.dataset.role); return; }
+    if (tile && tile.dataset.role) { showQuiz(tile.dataset.role); return; }
     if (e.target.closest('[data-role-back]')) {
       dialog.classList.remove('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleModalTitle');
       var f = modal.querySelector('.role-lead-iframe'); if (f) f.src = 'about:blank';
@@ -519,8 +599,20 @@ function showSuccess() {
         history.push({ role: 'assistant', content: reply });
         if (history.length > 12) history = history.slice(-12);
         addMsg(escapeHtml(reply), 'bot');
-        setChips(['Pricing', 'Book a demo', 'WhatsApp us']);
         mpxTrack('chat_ai_reply');
+        if (data.intent === 'hot') {
+          // Hot lead: offer a one-tap WhatsApp handoff carrying the AI-composed summary
+          var waText = (data.wa && String(data.wa).slice(0, 200)) || 'Hi Medplix, I want a free demo for my facility.';
+          var cta = document.createElement('div');
+          cta.className = 'chat-msg bot chat-cta';
+          cta.innerHTML = '<a class="chat-wa-btn" target="_blank" rel="noopener" href="https://wa.me/919540889999?text=' + encodeURIComponent(waText) + '">💬 Continue on WhatsApp</a>';
+          body.appendChild(cta); body.scrollTop = body.scrollHeight;
+          setChips(['Book a demo', 'Pricing']);
+          mpxTrack('chat_hot_intent');
+          try { document.dispatchEvent(new CustomEvent('mpx:hot-intent', { detail: { note: data.note || '' } })); } catch (e) {}
+        } else {
+          setChips(['Pricing', 'Book a demo', 'WhatsApp us']);
+        }
       })
       .catch(function () {
         if (timer) clearTimeout(timer);
@@ -584,6 +676,16 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
   document.querySelectorAll('iframe[src*="crm.medplix.ai"]').forEach(function (f) {
     f.src = withAttribution(f.src);
     watch(f);
+  });
+
+  // Hot chat leads: tag the demo form with the AI's lead note so the CRM sees why they came
+  document.addEventListener('mpx:hot-intent', function (e) {
+    var f = document.querySelector('#demo iframe');
+    var note = e.detail && e.detail.note;
+    if (!f || !note || f._mpxNoted) return;
+    if (document.activeElement === f) return;   // never reload a form being filled
+    f._mpxNoted = true;
+    f.src = withAttribution('https://crm.medplix.ai/?lead&src=chat&note=' + encodeURIComponent(String(note).slice(0, 120)));
   });
 
   // funnel events

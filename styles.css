@@ -1107,3 +1107,34 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
 @keyframes swipehint{0%,100%{transform:translateX(0)}50%{transform:translateX(-6px)}}
 @media(max-width:880px){.table-swipe-hint{display:block}}
 
+/* ===== AI chat hot-lead CTA ===== */
+.chat-msg.chat-cta{background:none;box-shadow:none;padding:2px 0}
+.chat-wa-btn{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;font-weight:700;font-size:.92rem;padding:10px 18px;border-radius:999px;box-shadow:0 8px 20px -10px rgba(37,211,102,.7);transition:transform .15s ease}
+.chat-wa-btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
+
+/* ===== Plan Finder quiz (role modal) ===== */
+.role-quiz{display:none;text-align:center}
+.role-dialog.quiz-mode .role-grid,
+.role-dialog.quiz-mode #roleModalTitle,
+.role-dialog.quiz-mode .role-sub,
+.role-dialog.quiz-mode .role-eyebrow,
+.role-dialog.quiz-mode .role-skip,
+.role-dialog.quiz-mode .role-leadview,
+.role-dialog.quiz-mode .role-nojs{display:none}
+.role-dialog.quiz-mode .role-quiz{display:block}
+.role-quiz .role-back{margin-bottom:6px}
+.role-quiz-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.35rem;color:var(--navy);margin:2px 0 16px}
+.role-quiz-q{font-weight:600;color:var(--ink);margin:0 0 12px}
+.role-quiz-opts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.role-quiz-opt{padding:12px 22px;border:1.5px solid var(--line);border-radius:14px;background:#fff;font-weight:600;font-size:.95rem;color:var(--ink);cursor:pointer;transition:border-color .15s ease,color .15s ease,transform .15s ease}
+.role-quiz-opt:hover{border-color:var(--teal-2);color:var(--teal-2);transform:translateY(-1px)}
+.role-quiz-result{background:linear-gradient(135deg,rgba(21,160,140,.07),rgba(28,79,160,.07));border:1px solid var(--line);border-radius:16px;padding:18px 16px;margin-top:4px}
+.rq-plan{font-weight:800;color:var(--navy);margin:0 0 8px}
+.rq-lines{font-size:.92rem;color:var(--muted);line-height:1.7}
+.rq-total{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.5rem;font-weight:800;margin:8px 0 2px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rq-fine{font-size:.78rem;color:var(--muted);margin:0 0 12px}
+.rq-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.role-quiz-skip{background:none;border:0;color:var(--muted);margin-top:14px;cursor:pointer;font-size:.9rem}
+.role-quiz-skip:hover{color:var(--teal-2)}
+@media(max-width:600px){.role-quiz-opts{flex-direction:column}.role-quiz-opt{width:100%}}
+\n

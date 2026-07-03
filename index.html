@@ -47,7 +47,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <script>document.documentElement.classList.add('js');</script>
-  <link rel="stylesheet" href="styles.css?v=22" />
+  <link rel="stylesheet" href="styles.css?v=23" />
 
   <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
   <script type="application/ld+json">
@@ -1249,6 +1249,35 @@
       </div>
       <button type="button" class="role-skip" data-role-close>Just let me explore</button>
 
+      <!-- Plan Finder: two quick questions → deterministic plan estimate from published prices -->
+      <div class="role-quiz">
+        <button type="button" class="role-back" data-quiz-back aria-label="Back to options">← Back</button>
+        <h3 class="role-quiz-title">Let's size your <span data-quiz-biz>plan</span> 🎯</h3>
+        <div data-quiz-step="1">
+          <p class="role-quiz-q" data-quiz-q1>How big is your facility?</p>
+          <div class="role-quiz-opts" data-quiz-opts1></div>
+        </div>
+        <div data-quiz-step="2" hidden>
+          <p class="role-quiz-q">Extra staff logins needed (beyond what's included)?</p>
+          <div class="role-quiz-opts">
+            <button type="button" class="role-quiz-opt" data-logins="0">None</button>
+            <button type="button" class="role-quiz-opt" data-logins="2">1–2</button>
+            <button type="button" class="role-quiz-opt" data-logins="3">3+</button>
+          </div>
+        </div>
+        <div class="role-quiz-result" hidden>
+          <p class="rq-plan" data-quiz-plan></p>
+          <div class="rq-lines" data-quiz-lines></div>
+          <p class="rq-total" data-quiz-total></p>
+          <p class="rq-fine">Per month, billed annually, + GST · 1-month free trial — no card needed</p>
+          <div class="rq-ctas">
+            <button type="button" class="btn btn-primary" data-quiz-trial>🚀 Start free trial</button>
+            <a class="btn btn-outline" target="_blank" rel="noopener" href="#" data-quiz-wa>💬 WhatsApp us</a>
+          </div>
+        </div>
+        <button type="button" class="role-quiz-skip" data-quiz-skip>Skip — book a demo directly →</button>
+      </div>
+
       <!-- Lead-capture view: CRM demo/lead form shown after a role is picked -->
       <div class="role-leadview">
         <button type="button" class="role-back" data-role-back aria-label="Back to options">← Back</button>
@@ -1267,6 +1296,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=18"></script>
+  <script src="script.js?v=19"></script>
 </body>
 </html>
