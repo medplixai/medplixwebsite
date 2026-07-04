@@ -1242,3 +1242,39 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
   .dm-chart{max-width:260px;height:150px}
 }
 \n
+
+/* ===== Key point: patient-connect section ===== */
+.connect-sec{background:linear-gradient(180deg,#f4f9fd 0%, #eef5fb 100%)}
+.connect-sec .sec-head h2{line-height:1.18}
+/* doctor <-> patient stage */
+.connect-stage{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;
+  max-width:720px;margin:6px auto 40px}
+.connect-node{flex:0 0 auto;width:170px;text-align:center;background:#fff;border:1px solid var(--line);
+  border-radius:18px;padding:20px 16px;box-shadow:0 16px 40px -24px rgba(15,45,94,.4)}
+.connect-node .cn-ico{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;margin-bottom:10px}
+.cn-doctor .cn-ico{background:linear-gradient(135deg,#1c4fa0,#1a63c4)}
+.cn-patient .cn-ico{background:linear-gradient(135deg,#12b39a,#0d8a78)}
+.connect-node b{display:block;color:var(--navy);font-size:1rem}
+.connect-node small{color:var(--muted);font-size:.82rem}
+.connect-node .cn-ico svg{width:26px;height:26px}
+.connect-link{flex:1 1 auto;position:relative;min-width:80px;height:56px;display:flex;align-items:center;justify-content:center}
+.cl-pulse{width:100%;height:40px;filter:drop-shadow(0 3px 5px rgba(21,160,140,.3))}
+.cl-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid var(--line);
+  box-shadow:0 6px 16px -8px rgba(15,45,94,.4);color:var(--navy);font-weight:800;font-size:.74rem;padding:4px 11px;border-radius:999px;white-space:nowrap}
+/* connection points grid */
+.connect-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+.connect-card{display:flex;gap:13px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+  border-radius:16px;padding:18px 18px;box-shadow:var(--shadow-sm)}
+.connect-card>span{flex:none;font-size:1.5rem;line-height:1}
+.connect-card b{display:block;color:var(--navy);font-size:1rem;margin-bottom:3px}
+.connect-card p{color:var(--muted);font-size:.9rem;line-height:1.6;margin:0}
+.connect-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+@media(max-width:860px){.connect-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){
+  .connect-grid{grid-template-columns:1fr}
+  .connect-stage{gap:0}
+  .connect-node{width:44%;padding:16px 10px}
+  .connect-node small{display:none}
+  .cl-badge{font-size:.68rem;padding:3px 8px}
+}
+\n
