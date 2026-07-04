@@ -1137,7 +1137,7 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
 .role-quiz-skip{background:none;border:0;color:var(--muted);margin-top:14px;cursor:pointer;font-size:.9rem}
 .role-quiz-skip:hover{color:var(--teal-2)}
 @media(max-width:600px){.role-quiz-opts{flex-direction:column}.role-quiz-opt{width:100%}}
-\n
+
 
 /* ===== Custom-build band (Products) ===== */
 .custom-band{margin-top:34px;border-radius:24px;overflow:hidden;
@@ -1172,7 +1172,7 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
   .custom-feats{grid-template-columns:1fr}
   .custom-copy h3{font-size:1.4rem}
 }
-\n
+
 
 /* ===== Website-design band (Products) ===== */
 .web-band{margin-top:22px;border-radius:24px;background:#fff;border:1px solid var(--line);
@@ -1208,7 +1208,7 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
   .web-copy h3{font-size:1.35rem}
   .wm-window{max-width:280px}
 }
-\n
+
 
 /* ===== Digital-marketing band (Products) ===== */
 .dm-band{margin-top:22px;border-radius:24px;overflow:hidden;position:relative;
@@ -1241,7 +1241,7 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
   .dm-copy h3{font-size:1.35rem}
   .dm-chart{max-width:260px;height:150px}
 }
-\n
+
 
 /* ===== Key point: patient-connect section ===== */
 .connect-sec{background:linear-gradient(180deg,#f4f9fd 0%, #eef5fb 100%)}
@@ -1277,7 +1277,7 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
   .connect-node small{display:none}
   .cl-badge{font-size:.68rem;padding:3px 8px}
 }
-\n
+
 
 /* ===== Free for medical students band ===== */
 .stu-band{margin-top:22px;border-radius:24px;overflow:hidden;position:relative;
@@ -1317,4 +1317,4 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
   .stu-feats{grid-template-columns:1fr}
   .stu-copy h3{font-size:1.4rem}
 }
-\n
+
