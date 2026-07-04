@@ -1318,3 +1318,8 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
   .stu-copy h3{font-size:1.4rem}
 }
 
+/* Products mega-menu: 3 balanced columns (Software / Services / Mobile Apps) on desktop */
+@media(min-width:1121px){
+  .mega-products{width:900px;max-width:calc(100vw - 28px)}
+  .mega-products .mega-cols{grid-template-columns:repeat(3,1fr);gap:12px}
+}
