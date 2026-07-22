@@ -350,6 +350,16 @@ function showSuccess() {
     var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
   }
 
+  // Global hook: the AI agent (chat widget) can open the demo form prefilled
+  window.mpxOpenLead = function (role, note) {
+    try {
+      var r = ROLES[role] ? role : 'clinic';
+      openModal(true);
+      dialog.classList.remove('quiz-mode');
+      showLead(r, 'chat-agent', note || '');
+    } catch (e) {}
+  };
+
   // ---- Plan Finder quiz: 2 enum questions → deterministic plan estimate (published prices only) ----
   var PLANS = {
     hospital: { name: 'Medplix HMS — Complete Hospital Suite', base: 1250 },
@@ -576,6 +586,42 @@ function showSuccess() {
       var res = getReply(q); addMsg(res.r, 'bot'); setChips(res.c);
     }, 480 + Math.random() * 360);
   }
+  // Perform the actions the AI agent asked for (open the demo form, WhatsApp,
+  // scroll to a section, confirm a submitted lead). Each is user-visible.
+  function runActions(actions) {
+    actions.slice(0, 4).forEach(function (a, i) {
+      if (!a || !a.type) return;
+      setTimeout(function () {
+        try {
+          if (a.type === 'open_demo_form') {
+            addMsg('📋 Opening your demo form…', 'bot');
+            mpxTrack('chat_agent_open_demo');
+            closeChat();
+            if (window.mpxOpenLead) window.mpxOpenLead(a.role, a.note);
+            else { document.documentElement.style.scrollBehavior = 'smooth'; location.hash = '#demo'; }
+          } else if (a.type === 'open_whatsapp') {
+            mpxTrack('chat_agent_whatsapp');
+            window.open(a.url, '_blank', 'noopener');
+          } else if (a.type === 'go_to_section') {
+            var el = document.getElementById(a.section);
+            if (el) {
+              mpxTrack('chat_agent_navigate', { section: a.section });
+              closeChat();
+              document.documentElement.style.scrollBehavior = 'smooth';
+              el.scrollIntoView({ block: 'start' });
+            }
+          } else if (a.type === 'lead_submitted') {
+            mpxTrack('chat_agent_lead');
+            var d = document.createElement('div');
+            d.className = 'chat-msg bot chat-cta';
+            d.innerHTML = '<a class="chat-wa-btn" target="_blank" rel="noopener" href="' + a.whatsapp_url + '">💬 Confirm on WhatsApp</a>';
+            body.appendChild(d); body.scrollTop = body.scrollHeight;
+          }
+        } catch (e) {}
+      }, 400 * i);
+    });
+  }
+
   // Real AI replies via /api/chat (Claude, server-side key). Falls back to the
   // local KB bot if the endpoint is unavailable (no key configured, error, timeout).
   var history = [];
@@ -613,6 +659,7 @@ function showSuccess() {
         } else {
           setChips(['Pricing', 'Book a demo', 'WhatsApp us']);
         }
+        if (data.actions && data.actions.length) runActions(data.actions);
       })
       .catch(function () {
         if (timer) clearTimeout(timer);
