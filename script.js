@@ -132,7 +132,7 @@ function showSuccess() {
       '<div class="fs-ico">✅</div>' +
       '<h3>Thank you!</h3>' +
       '<p>Your demo request is in. Our team will reach out within 24 hours.</p>' +
-      '<p style="margin-top:10px"><a class="cta-call" href="https://wa.me/919540889999?text=Hi%20Medplix%2C%20I%20want%20a%20free%20demo%20for%20my%20facility." target="_blank" rel="noopener" style="color:#0d8a78;font-weight:700">Or message us on WhatsApp →</a></p>' +
+      '<p style="margin-top:10px"><a class="cta-call" href="https://wa.me/919515831777?text=Hi%20Medplix%2C%20I%20want%20a%20free%20demo%20for%20my%20facility." target="_blank" rel="noopener" style="color:#0d8a78;font-weight:700">Or message us on WhatsApp →</a></p>' +
     '</div>';
 }
 
@@ -323,7 +323,7 @@ function showSuccess() {
     var rt = modal.querySelector('[data-lead-role]'); if (rt) rt.textContent = r.biz;
     var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', r.page);
     var wl = modal.querySelector('.role-lead-call a[href^="https://wa.me"]');
-    if (wl) wl.href = 'https://wa.me/919540889999?text=' + encodeURIComponent('Hi Medplix, I run a ' + r.biz + ' and want a free demo.');
+    if (wl) wl.href = 'https://wa.me/919515831777?text=' + encodeURIComponent('Hi Medplix, I run a ' + r.biz + ' and want a free demo.');
     dialog.classList.remove('quiz-mode');
     dialog.classList.add('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleLeadTitle');
     var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
@@ -345,7 +345,7 @@ function showSuccess() {
     var onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
     var ex = modal.querySelector('[data-lead-explore]'); if (ex) ex.setAttribute('href', (onHome ? '' : 'index.html') + '#products');
     var wl = modal.querySelector('.role-lead-call a[href^="https://wa.me"]');
-    if (wl) wl.href = 'https://wa.me/919540889999?text=' + encodeURIComponent('Hi Medplix, I want a free demo for my facility.');
+    if (wl) wl.href = 'https://wa.me/919515831777?text=' + encodeURIComponent('Hi Medplix, I want a free demo for my facility.');
     dialog.classList.add('lead-mode'); dialog.setAttribute('aria-labelledby', 'roleLeadTitle');
     var back = modal.querySelector('[data-role-back]'); if (back) { try { back.focus(); } catch (e) {} }
   }
@@ -405,7 +405,7 @@ function showSuccess() {
     modal.querySelector('[data-quiz-total]').textContent = '≈ ' + (from ? 'from ' : '') + inr(total) + '/month';
     var waMsg = 'Hi Medplix, I run a ' + (quizSize || '') + ' ' + r.biz.toLowerCase() + (logins ? ' and need ' + (from ? '3+' : '1–2') + ' extra logins' : '') + ' — interested in ' + p.name.split(' — ')[0] + ' (' + inr(total) + '/mo). Please share demo details.';
     var wa = modal.querySelector('[data-quiz-wa]');
-    if (wa) wa.href = 'https://wa.me/919540889999?text=' + encodeURIComponent(waMsg);
+    if (wa) wa.href = 'https://wa.me/919515831777?text=' + encodeURIComponent(waMsg);
     modal.querySelector('[data-quiz-step="2"]').hidden = true;
     modal.querySelector('.role-quiz-result').hidden = false;
     markSeenDemo();
@@ -547,7 +547,7 @@ function showSuccess() {
     { k: ['demo', 'trial', 'try', 'free', 'test', 'get started', 'sign up', 'signup', 'start'], r: "You can <b>try free for 1 month</b> — no card required. Want me to set up a free demo? Our team reaches out within 24 hours.", c: ['Book a demo', 'WhatsApp us'] },
     { k: ['ai connect', 'ai ', 'claude', 'chatgpt', 'mcp', 'owner ai', 'connect data'], r: "Medplix AI Connect securely links your data to Claude, ChatGPT or in-app Owner AI (read-only, tenant-isolated) so you can ask 'which branch is in loss?' in plain language. ₹499/mo add-on. <a href='#ai-connect'>Learn more →</a>", c: ['Pricing', 'Book a demo'] },
     { k: ['secure', 'security', 'safe', 'data', 'privacy', 'backup', 'cloud'], r: "Yes — cloud-based with tenant-isolated, owner-only data, role-based access, audit logs and secure backups. AI Connect is read-only. <a href='privacy.html'>Privacy policy →</a>", c: ['Book a demo'] },
-    { k: ['contact', 'phone', 'call', 'number', 'email', 'reach', 'talk', 'support', 'whatsapp'], r: "📞 <a href='tel:+919540889999'>95408 89999</a><br>✉️ <a href='mailto:support@medplix.ai'>support@medplix.ai</a><br>Or chat on <a href='https://wa.me/919540889999' target='_blank' rel='noopener'>WhatsApp</a>.", c: ['Book a demo'] },
+    { k: ['contact', 'phone', 'call', 'number', 'email', 'reach', 'talk', 'support', 'whatsapp'], r: "📞 <a href='tel:+919540889999'>95408 89999</a><br>✉️ <a href='mailto:support@medplix.ai'>support@medplix.ai</a><br>Or chat on <a href='https://wa.me/919515831777' target='_blank' rel='noopener'>WhatsApp</a>.", c: ['Book a demo'] },
     { k: ['login', 'logins', 'user', 'users', 'additional', 'seats', 'staff login'], r: "Each plan includes role logins (Doctor, Reception, Pharmacy, Lab, Owner, HR…). Extra Desktop/Mobile logins are <b>₹299/month</b> each.", c: ['Pricing', 'Book a demo'] },
     { k: ['branch', 'branches', 'multi branch', 'multiple', 'chain', 'locations'], r: "Yes — Medplix scales from a single location to multi-branch chains, with centralised owner control and branch-wise reporting.", c: ['Pricing', 'Book a demo'] },
     { k: ['bazaar', 'wholesale', 'procurement', 'purchase', 'supplier'], r: "Medplix Bazaar lets you buy medicines, surgicals, furniture & equipment at the best wholesale price — compared across verified suppliers, right from your dashboard.", c: ['Products', 'Book a demo'] },
@@ -605,7 +605,7 @@ function showSuccess() {
           var waText = (data.wa && String(data.wa).slice(0, 200)) || 'Hi Medplix, I want a free demo for my facility.';
           var cta = document.createElement('div');
           cta.className = 'chat-msg bot chat-cta';
-          cta.innerHTML = '<a class="chat-wa-btn" target="_blank" rel="noopener" href="https://wa.me/919540889999?text=' + encodeURIComponent(waText) + '">💬 Continue on WhatsApp</a>';
+          cta.innerHTML = '<a class="chat-wa-btn" target="_blank" rel="noopener" href="https://wa.me/919515831777?text=' + encodeURIComponent(waText) + '">💬 Continue on WhatsApp</a>';
           body.appendChild(cta); body.scrollTop = body.scrollHeight;
           setChips(['Book a demo', 'Pricing']);
           mpxTrack('chat_hot_intent');
@@ -625,7 +625,7 @@ function showSuccess() {
     var low = text.toLowerCase();
     if (VIEW[low]) { addMsg(text, 'user'); window.location.href = VIEW[low]; return; }
     if (low === 'book a demo') { addMsg(text, 'user'); setChips([]); var td = typing(); setTimeout(function () { td.remove(); addMsg("Great! Taking you to the demo form 👇 Fill it in and our team calls within 24 hours.", 'bot'); setTimeout(function () { closeChat(); document.documentElement.style.scrollBehavior = 'smooth'; location.hash = '#demo'; }, 900); }, 480); return; }
-    if (low.indexOf('whatsapp') > -1 && low.length < 14) { addMsg(text, 'user'); window.open('https://wa.me/919540889999?text=Hi%20Medplix%2C%20I%20want%20to%20know%20more%20about%20Medplix.AI%20for%20my%20facility.', '_blank', 'noopener'); var tw = typing(); setTimeout(function () { tw.remove(); addMsg("Opening WhatsApp… 💬 You can also call <a href='tel:+919540889999'>95408 89999</a>.", 'bot'); setChips(['Pricing', 'Book a demo']); }, 400); return; }
+    if (low.indexOf('whatsapp') > -1 && low.length < 14) { addMsg(text, 'user'); window.open('https://wa.me/919515831777?text=Hi%20Medplix%2C%20I%20want%20to%20know%20more%20about%20Medplix.AI%20for%20my%20facility.', '_blank', 'noopener'); var tw = typing(); setTimeout(function () { tw.remove(); addMsg("Opening WhatsApp… 💬 You can also call <a href='tel:+919540889999'>95408 89999</a>.", 'bot'); setChips(['Pricing', 'Book a demo']); }, 400); return; }
     addMsg(text, 'user'); setChips([]);
     history.push({ role: 'user', content: text.slice(0, 1200) });
     askAI(text);
@@ -657,7 +657,7 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
       fb.innerHTML = '<h3>Form is taking a moment to load</h3>' +
         '<p>You can reach us right now instead:</p>' +
         '<div class="crm-fallback-actions">' +
-        '<a class="btn btn-primary" href="https://wa.me/919540889999?text=Hi%20Medplix%2C%20I%20want%20a%20free%20demo%20for%20my%20facility." target="_blank" rel="noopener">💬 WhatsApp us</a>' +
+        '<a class="btn btn-primary" href="https://wa.me/919515831777?text=Hi%20Medplix%2C%20I%20want%20a%20free%20demo%20for%20my%20facility." target="_blank" rel="noopener">💬 WhatsApp us</a>' +
         '<a class="btn btn-outline" href="tel:+919540889999">📞 Call 95408 89999</a>' +
         '<a class="btn btn-outline" href="mailto:support@medplix.ai">✉️ Email us</a></div>' +
         '<button type="button" class="crm-retry">Try the form again →</button>';
