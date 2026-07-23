@@ -557,7 +557,7 @@ function showSuccess() {
     { k: ['demo', 'trial', 'try', 'free', 'test', 'get started', 'sign up', 'signup', 'start'], r: "You can <b>try free for 1 month</b> — no card required. Want me to set up a free demo? Our team reaches out within 24 hours.", c: ['Book a demo', 'WhatsApp us'] },
     { k: ['ai connect', 'ai ', 'claude', 'chatgpt', 'mcp', 'owner ai', 'connect data'], r: "Medplix AI Connect securely links your data to Claude, ChatGPT or in-app Owner AI (read-only, tenant-isolated) so you can ask 'which branch is in loss?' in plain language. ₹499/mo add-on. <a href='#ai-connect'>Learn more →</a>", c: ['Pricing', 'Book a demo'] },
     { k: ['secure', 'security', 'safe', 'data', 'privacy', 'backup', 'cloud'], r: "Yes — cloud-based with tenant-isolated, owner-only data, role-based access, audit logs and secure backups. AI Connect is read-only. <a href='privacy.html'>Privacy policy →</a>", c: ['Book a demo'] },
-    { k: ['contact', 'phone', 'call', 'number', 'email', 'reach', 'talk', 'support', 'whatsapp'], r: "📞 <a href='tel:+919540889999'>95408 89999</a><br>✉️ <a href='mailto:support@medplix.ai'>support@medplix.ai</a><br>Or chat on <a href='https://wa.me/919515831777' target='_blank' rel='noopener'>WhatsApp</a>.", c: ['Book a demo'] },
+    { k: ['contact', 'phone', 'call', 'number', 'email', 'reach', 'talk', 'support', 'whatsapp'], r: "📞 <a href='tel:+919515831777'>95158 31777</a><br>✉️ <a href='mailto:support@medplix.ai'>support@medplix.ai</a><br>Or chat on <a href='https://wa.me/919515831777' target='_blank' rel='noopener'>WhatsApp</a>.", c: ['Book a demo'] },
     { k: ['login', 'logins', 'user', 'users', 'additional', 'seats', 'staff login'], r: "Each plan includes role logins (Doctor, Reception, Pharmacy, Lab, Owner, HR…). Extra Desktop/Mobile logins are <b>₹299/month</b> each.", c: ['Pricing', 'Book a demo'] },
     { k: ['branch', 'branches', 'multi branch', 'multiple', 'chain', 'locations'], r: "Yes — Medplix scales from a single location to multi-branch chains, with centralised owner control and branch-wise reporting.", c: ['Pricing', 'Book a demo'] },
     { k: ['bazaar', 'wholesale', 'procurement', 'purchase', 'supplier'], r: "Medplix Bazaar lets you buy medicines, surgicals, furniture & equipment at the best wholesale price — compared across verified suppliers, right from your dashboard.", c: ['Products', 'Book a demo'] },
@@ -672,7 +672,7 @@ function showSuccess() {
     var low = text.toLowerCase();
     if (VIEW[low]) { addMsg(text, 'user'); window.location.href = VIEW[low]; return; }
     if (low === 'book a demo') { addMsg(text, 'user'); setChips([]); var td = typing(); setTimeout(function () { td.remove(); addMsg("Great! Taking you to the demo form 👇 Fill it in and our team calls within 24 hours.", 'bot'); setTimeout(function () { closeChat(); document.documentElement.style.scrollBehavior = 'smooth'; location.hash = '#demo'; }, 900); }, 480); return; }
-    if (low.indexOf('whatsapp') > -1 && low.length < 14) { addMsg(text, 'user'); window.open('https://wa.me/919515831777?text=Hi%20Medplix%2C%20I%20want%20to%20know%20more%20about%20Medplix.AI%20for%20my%20facility.', '_blank', 'noopener'); var tw = typing(); setTimeout(function () { tw.remove(); addMsg("Opening WhatsApp… 💬 You can also call <a href='tel:+919540889999'>95408 89999</a>.", 'bot'); setChips(['Pricing', 'Book a demo']); }, 400); return; }
+    if (low.indexOf('whatsapp') > -1 && low.length < 14) { addMsg(text, 'user'); window.open('https://wa.me/919515831777?text=Hi%20Medplix%2C%20I%20want%20to%20know%20more%20about%20Medplix.AI%20for%20my%20facility.', '_blank', 'noopener'); var tw = typing(); setTimeout(function () { tw.remove(); addMsg("Opening WhatsApp… 💬 You can also call <a href='tel:+919515831777'>95158 31777</a>.", 'bot'); setChips(['Pricing', 'Book a demo']); }, 400); return; }
     addMsg(text, 'user'); setChips([]);
     history.push({ role: 'user', content: text.slice(0, 1200) });
     askAI(text);
@@ -705,7 +705,7 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
         '<p>You can reach us right now instead:</p>' +
         '<div class="crm-fallback-actions">' +
         '<a class="btn btn-primary" href="https://wa.me/919515831777?text=Hi%20Medplix%2C%20I%20want%20a%20free%20demo%20for%20my%20facility." target="_blank" rel="noopener">💬 WhatsApp us</a>' +
-        '<a class="btn btn-outline" href="tel:+919540889999">📞 Call 95408 89999</a>' +
+        '<a class="btn btn-outline" href="tel:+919515831777">📞 Call 95158 31777</a>' +
         '<a class="btn btn-outline" href="mailto:support@medplix.ai">✉️ Email us</a></div>' +
         '<button type="button" class="crm-retry">Try the form again →</button>';
       f.style.display = 'none';
