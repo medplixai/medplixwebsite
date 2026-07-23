@@ -120,7 +120,7 @@ form?.addEventListener('submit', async (e) => {
     btn.disabled = false;
     btn.innerHTML = original;
     if (note) {
-      note.textContent = 'Something went wrong. Please call us at 95408 89999 or try again.';
+      note.textContent = 'Something went wrong. Please call us at 95158 31777 or try again.';
       note.classList.add('error');
     }
   }
