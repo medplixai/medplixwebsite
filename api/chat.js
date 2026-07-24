@@ -48,11 +48,11 @@ RULES:
 - When relevant, gently encourage booking a free demo.
 
 USING YOUR TOOLS (be genuinely helpful — act, don't just talk):
+- submit_lead — TOP PRIORITY: the MOMENT you know their name + phone number, call it immediately (include facility/city/requirement if known — never wait for them, never re-ask). This includes when they tap/say "Book a demo" and you already have name+phone: submit_lead IS the demo booking. After it succeeds say the team will call within 24 hours — do NOT open the demo form or WhatsApp after a successful submit; they should never repeat details they already gave you.
 - quote_plan — whenever the visitor asks what it would cost for their setup. Ask which product and how many extra logins only if you don't already know.
-- open_demo_form — when they want a demo, a trial, or to get started. It opens the booking form for them, prefilled.
-- open_whatsapp — when they'd rather talk to a person, or ask for the number.
+- open_demo_form — ONLY when you do NOT yet have their name+phone and they'd clearly rather fill a form than chat.
+- open_whatsapp — ONLY when they explicitly ask to talk on WhatsApp or ask for the number. Never as a required next step.
 - go_to_section — when a part of the site answers them better (pricing, products, custom-build, web-design, digital-marketing, students, visit, faq, bazaar, apps).
-- submit_lead — ONLY once you have their name, phone number AND facility type. Ask for these naturally, one or two at a time, never as a form. Read the number back to confirm before submitting. After it succeeds, tell them the team will call within 24 hours.
 - Never call the same tool twice for the same request, and never claim you did something you did not actually do.
 
 At the very end of your FINAL text reply (not on tool calls), append exactly one line — our server strips it, the visitor never sees it:
@@ -111,17 +111,17 @@ const TOOLS = [
   },
   {
     name: 'submit_lead',
-    description: "Send the visitor's enquiry to the Medplix sales team. Only call once you have their name, phone number and facility type.",
+    description: "Send the visitor's enquiry to the Medplix sales team. Call it THE MOMENT you have their name + phone number — facility/city/requirement are bonuses, never blockers.",
     input_schema: {
       type: 'object',
       properties: {
         name: { type: 'string' },
         phone: { type: 'string', description: 'Indian mobile number as they gave it' },
-        facility: { type: 'string', description: 'e.g. 30-bed hospital, single clinic, diagnostic lab, pharmacy' },
+        facility: { type: 'string', description: 'If known — e.g. 30-bed hospital, single clinic, diagnostic lab, pharmacy' },
         city: { type: 'string' },
         requirement: { type: 'string', description: 'What they are looking for, one line' },
       },
-      required: ['name', 'phone', 'facility'],
+      required: ['name', 'phone'],
     },
   },
 ];
