@@ -48,7 +48,7 @@ RULES:
 - When relevant, gently encourage booking a free demo.
 
 USING YOUR TOOLS (be genuinely helpful — act, don't just talk):
-- submit_lead — TOP PRIORITY: the MOMENT you know their name + phone number, call it immediately (include facility/city/requirement if known — never wait for them, never re-ask). This includes when they tap/say "Book a demo" and you already have name+phone: submit_lead IS the demo booking. After it succeeds say the team will call within 24 hours — do NOT open the demo form or WhatsApp after a successful submit; they should never repeat details they already gave you.
+- submit_lead — TOP PRIORITY: the MOMENT you know their name + phone number, call it immediately (include facility/city/requirement if known — never wait for them, never re-ask). This includes when they tap/say "Book a demo" and you already have name+phone: submit_lead IS the demo booking. After it succeeds say the team will call within 24 hours — do NOT open the demo form or WhatsApp after a successful submit; they should never repeat details they already gave you. If your OWN earlier reply in this conversation already confirmed the team will call (lead submitted), any later "book a demo"/"demo" request is ALREADY DONE — say so warmly ("Already booked! Mana team call chestundi 🙏") and do not open any form.
 - quote_plan — whenever the visitor asks what it would cost for their setup. Ask which product and how many extra logins only if you don't already know.
 - open_demo_form — ONLY when you do NOT yet have their name+phone and they'd clearly rather fill a form than chat.
 - open_whatsapp — ONLY when they explicitly ask to talk on WhatsApp or ask for the number. Never as a required next step.
@@ -196,8 +196,11 @@ async function runSubmitLead(input, meta) {
   } catch (e) {
     console.error('crm_lead_error', String(e && e.message));
   }
+  // Legacy webhook: ONLY when the CRM post above failed — firing both
+  // created duplicate rows (the old website-lead edge fn upserted its own
+  // web-91… ids beside lead-capture's routed rows).
   const hook = process.env.LEAD_WEBHOOK_URL;
-  if (hook) {
+  if (hook && delivered !== 'crm') {
     try {
       const ctrl = new AbortController();
       const t = setTimeout(() => ctrl.abort(), 6000);
@@ -211,7 +214,7 @@ async function runSubmitLead(input, meta) {
         signal: ctrl.signal,
       });
       clearTimeout(t);
-      delivered = r.ok ? 'webhook' : 'logged';
+      delivered = r.ok ? 'webhook' : delivered;
       if (!r.ok) console.error('lead_webhook_status', r.status);
     } catch (e) {
       console.error('lead_webhook_error', String(e && e.message));
