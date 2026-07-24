@@ -165,8 +165,37 @@ async function runSubmitLead(input, meta) {
   // Always logged so a lead is never lost (Vercel → Logs)
   console.log('LEAD', JSON.stringify(lead));
 
-  // Preferred delivery: POST to the CRM / Zapier / Sheet webhook when configured
+  // PRIMARY delivery: straight into the Medplix CRM. The keyless 'website'
+  // path needs a real 10-digit Indian mobile + empty honeypot — exactly what
+  // we validated above. The CRM dedupes, runs the Lead Router (rep gets a
+  // WhatsApp alert) and puts the lead in the demo pipeline. No env needed.
   let delivered = 'logged';
+  try {
+    const fac = lead.facility.toLowerCase();
+    const facilityType = fac.indexOf('hosp') > -1 ? 'Hospital' : fac.indexOf('lab') > -1 || fac.indexOf('diag') > -1 ? 'Lab' : fac.indexOf('pharm') > -1 ? 'Pharmacy' : 'Clinic';
+    const ctrl0 = new AbortController();
+    const t0 = setTimeout(() => ctrl0.abort(), 6000);
+    const r0 = await fetch('https://crm.medplix.ai/api/lead-capture', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: lead.name,
+        mobile: digits.slice(-10),
+        source: 'website',
+        town: lead.city,
+        facilityType: facilityType,
+        requirement: lead.requirement,
+        note: 'Website AI chat lead (' + lead.facility + ')',
+        hp: '',
+      }),
+      signal: ctrl0.signal,
+    });
+    clearTimeout(t0);
+    if (r0.ok) delivered = 'crm';
+    else console.error('crm_lead_status', r0.status);
+  } catch (e) {
+    console.error('crm_lead_error', String(e && e.message));
+  }
   const hook = process.env.LEAD_WEBHOOK_URL;
   if (hook) {
     try {
