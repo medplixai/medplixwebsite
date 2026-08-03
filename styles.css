@@ -1406,3 +1406,40 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
 .gtab{display:inline-flex;align-items:center;gap:7px}
 .gtab-ic{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .gtab.active .gtab-ic{filter:drop-shadow(0 1px 1px rgba(4,60,52,.4))}
+
+/* ===================== SVG ICON SYSTEM (emoji-free) ===================== */
+.ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:-.12em;flex:none}
+.ic-flag{width:1em;height:1em;display:inline-block;vertical-align:-.12em;flex:none}
+.chip{display:inline-flex;align-items:center;gap:8px}
+.chip .ic{color:var(--teal-2);width:1.1em;height:1.1em}
+.chip.ai .ic{color:#6d43c9}
+.bazaar-pill{display:inline-flex;align-items:center;gap:9px}
+.bazaar-pill .ic{color:var(--teal-2);width:1.15em;height:1.15em}
+.india-strip-row span{display:inline-flex;align-items:center;gap:7px}
+.india-strip-row .ic{color:var(--teal-2);width:1.1em;height:1.1em}
+/* glossy gradient tiles for section + list icons */
+.connect-card>span{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;color:#fff;font-size:1.15rem;
+  position:relative;overflow:hidden;isolation:isolate;
+  background:linear-gradient(155deg,#37c4b0 0%,#16a594 46%,#0c8474 100%);
+  box-shadow:0 10px 20px -9px rgba(11,120,104,.6),inset 0 1.5px 1px rgba(255,255,255,.65),inset 0 -4px 8px rgba(4,60,52,.3)}
+.connect-card>span::before{content:"";position:absolute;left:0;right:0;top:0;height:56%;border-radius:inherit;z-index:-1;
+  background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.12) 60%,rgba(255,255,255,0))}
+.bz-row span{color:#fff;position:relative;overflow:hidden;isolation:isolate;
+  background:linear-gradient(155deg,#37c4b0,#0c8474);
+  box-shadow:0 6px 12px -6px rgba(11,120,104,.55),inset 0 1px 1px rgba(255,255,255,.6),inset 0 -3px 5px rgba(4,60,52,.28)}
+.bz-row span::before{content:"";position:absolute;left:0;right:0;top:0;height:55%;border-radius:inherit;z-index:-1;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0))}
+.step-ico,.switch-ico,.compliance-ico,.trust-ico{position:relative;overflow:hidden;isolation:isolate;color:#fff}
+.step-ico,.switch-ico,.compliance-ico{background:linear-gradient(155deg,#37c4b0 0%,#16a594 46%,#0c8474 100%);
+  box-shadow:0 12px 24px -10px rgba(11,120,104,.55),inset 0 1.5px 1px rgba(255,255,255,.65),inset 0 -5px 9px rgba(4,60,52,.3)}
+.trust-ico{background:linear-gradient(155deg,#5e93e8 0%,#2f66c4 52%,#1c4fa0 100%);
+  box-shadow:0 12px 24px -10px rgba(28,79,160,.5),inset 0 1.5px 1px rgba(255,255,255,.6),inset 0 -5px 9px rgba(10,35,80,.3)}
+.step-ico::before,.switch-ico::before,.compliance-ico::before,.trust-ico::before{content:"";position:absolute;left:0;right:0;top:0;height:56%;border-radius:inherit;z-index:-1;
+  background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.13) 58%,rgba(255,255,255,0))}
+.step-ico .ic,.switch-ico .ic,.compliance-ico .ic,.trust-ico .ic,.who-its-for-ico .ic,.ac-ico .ic,.chat-ico .ic,.connect-card>span .ic,.bz-row span .ic{filter:drop-shadow(0 1px 1px rgba(4,60,52,.35))}
+.ac-ico,.chat-ico,.who-its-for-ico{color:#fff}
+.stat-ico,.al-ico,.addon span .ic{color:var(--teal-2)}
+.switch-warn .ic{color:#d98a1f;width:1.05em;height:1.05em}
+.benefit-item .bi-check .ic{width:15px;height:15px;stroke-width:2.6}
+.eyebrow .ic,.kicker .ic,.btn .ic{width:1.05em;height:1.05em}
+.rx-wa{display:flex;align-items:center;justify-content:center;gap:7px}
+.cta-trust .ic,.foot-contact .ic{width:1em;height:1em;vertical-align:-.13em}

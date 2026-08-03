@@ -129,7 +129,7 @@ form?.addEventListener('submit', async (e) => {
 function showSuccess() {
   form.innerHTML =
     '<div class="form-success">' +
-      '<div class="fs-ico">✅</div>' +
+      '<div class="fs-ico"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8.5 12.5 2.5 2.5 5-5"/></svg></div>' +
       '<h3>Thank you!</h3>' +
       '<p>Your demo request is in. Our team will reach out within 24 hours.</p>' +
       '<p style="margin-top:10px"><a class="cta-call" href="https://wa.me/919515831777?text=Hi%20Medplix%2C%20I%20want%20a%20free%20demo%20for%20my%20facility." target="_blank" rel="noopener" style="color:#0d8a78;font-weight:700">Or message us on WhatsApp →</a></p>' +
@@ -614,7 +614,7 @@ function showSuccess() {
             mpxTrack('chat_agent_lead');
             var d = document.createElement('div');
             d.className = 'chat-msg bot chat-cta';
-            d.innerHTML = '<a class="chat-wa-btn" target="_blank" rel="noopener" href="' + a.whatsapp_url + '">💬 Confirm on WhatsApp</a>';
+            d.innerHTML = '<a class="chat-wa-btn" target="_blank" rel="noopener" href="' + a.whatsapp_url + '"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Confirm on WhatsApp</a>';
             body.appendChild(d); body.scrollTop = body.scrollHeight;
           }
         } catch (e) {}
@@ -705,8 +705,8 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
         '<p>You can reach us right now instead:</p>' +
         '<div class="crm-fallback-actions">' +
         '<a class="btn btn-primary" href="https://wa.me/919515831777?text=Hi%20Medplix%2C%20I%20want%20a%20free%20demo%20for%20my%20facility." target="_blank" rel="noopener">💬 WhatsApp us</a>' +
-        '<a class="btn btn-outline" href="tel:+919515831777">📞 Call 95158 31777</a>' +
-        '<a class="btn btn-outline" href="mailto:support@medplix.ai">✉️ Email us</a></div>' +
+        '<a class="btn btn-outline" href="tel:+919515831777"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg> Call 95158 31777</a>' +
+        '<a class="btn btn-outline" href="mailto:support@medplix.ai"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg> Email us</a></div>' +
         '<button type="button" class="crm-retry">Try the form again →</button>';
       f.style.display = 'none';
       f.parentNode.appendChild(fb);
