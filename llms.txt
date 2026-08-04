@@ -1,31 +1,41 @@
 # Medplix.AI
 
-> AI-powered hospital, clinic, lab & pharmacy management software for India. Cloud SaaS — works anywhere in India with fully remote demo, onboarding, data migration and staff training. INR pricing, GST-compliant billing.
+> AI-powered hospital, clinic, lab & pharmacy management software for India. Cloud SaaS — works anywhere in India with fully remote demo, onboarding, data migration and staff training. INR pricing, GST-compliant billing. Also: custom-built healthcare software, healthcare website design, digital marketing for healthcare, and free prescription software for medical students.
 
-Medplix.AI ("Your Intelligent HealthTech Partner") is a cloud-based healthcare management platform for Indian healthcare businesses: hospitals, clinics, laboratories/diagnostic centres and pharmacies. It covers OPD, IPD, ICU, OT, laboratory (LIS), pharmacy, GST-ready billing, HR/payroll, owner dashboards & analytics, wholesale procurement (Medplix Bazaar) and AI Connect — a secure, read-only, tenant-isolated connector that links an owner's business data to AI assistants.
+Medplix.AI ("Your Intelligent HealthTech Partner") is a cloud healthcare platform by **Medplix AI Private Limited** (CIN U62013MR2026PTC477850, registered office: Innov8 Q Parc, Ghansoli/Rabale, Thane 400701, Maharashtra, India). It covers OPD, IPD, ICU, OT, laboratory (LIS), pharmacy, GST-ready billing, HR/payroll, owner dashboards & analytics, wholesale procurement (Medplix Bazaar) and AI Connect — a secure, read-only, tenant-isolated connector that links an owner's business data to AI assistants. Key positioning: Medplix is not just prescription software — it is a living link between a practice and its patients (teleconsultation, online appointments, digital prescriptions & reports, follow-up reminders, online payments).
 
-## Products & pricing (per month, billed annually, excluding GST)
+## Software products & pricing (per month, billed annually, excluding GST)
 
 - [Medplix HMS — Complete Hospital Suite](https://www.medplix.ai/product-hms.html): OPD, IPD, ICU/OT, lab, pharmacy, billing, HR & marketing. ₹1,250/mo.
 - [Medplix Clinic](https://www.medplix.ai/product-clinic.html): appointments, EMR, prescriptions, lab, pharmacy & daycare. ₹499/mo.
 - [Medplix Labs (LIS)](https://www.medplix.ai/product-labs.html): billing, sample tracking, auto reports & referrals. ₹499/mo.
 - [Medplix Pharmacy](https://www.medplix.ai/product-pharmacy.html): POS billing, inventory, batch & expiry, GST accounting. ₹499/mo.
+- Add-ons: extra desktop/mobile login ₹299/mo each; Medplix AI Connect ₹499/mo.
 
 Free 1-month trial, no card required. Setup, data migration and staff training are included and done remotely.
 
+## Services
+
+- [Custom-built healthcare software](https://www.medplix.ai/#custom-build): a hospital's own system built around its workflows — pick modules, module-based pricing, 100% customizable.
+- [Healthcare website design](https://www.medplix.ai/#web-design): modern websites for clinics/hospitals/labs/pharmacies with appointment forms, branding and Google-ready SEO.
+- [Digital marketing for healthcare](https://www.medplix.ai/#digital-marketing): Google Ads, Google Business Profile, local SEO, social campaigns, monthly lead/ROI reports.
+- [Free for medical students & interns](https://www.medplix.ai/#students): free digital prescription software — write Rx, share on WhatsApp, build a patient base, track history. 100% free, no card.
+- Mobile apps: Medplix Care (patient app), Medplix Pulse (staff app), Medplix Meds (medicine ordering).
+
 ## Key facts
 
-- Made for India: INR pricing, GST-compliant billing in every state, multi-branch support across cities.
+- Made for India: INR pricing, GST-compliant billing in every state, multi-branch support across cities. Serves customers pan-India, fully remotely.
 - Security: encryption in transit and at rest, automatic daily backups, role-based access, audit trails, tenant isolation. Data is exportable anytime (no lock-in).
+- 24/7 support on WhatsApp, phone and email.
 - Medplix.AI is a software provider; it does not provide medical advice.
 
 ## Contact
 
 - Website: https://www.medplix.ai/
-- Book a demo: https://www.medplix.ai/#demo
-- Phone / WhatsApp: +91 95158 31777
-- Alternate phone: +91 95408 89999
+- Book a free demo: https://www.medplix.ai/#demo
+- Phone / WhatsApp (sales, support & demos): +91 95158 31777
 - Email: support@medplix.ai
+- Registered office: Innov8 Q Parc, Ghansoli/Rabale, Thane 400701, Maharashtra, India
 
 ## Policies
 
