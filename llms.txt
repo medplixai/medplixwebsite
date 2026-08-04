@@ -25,6 +25,8 @@ Free 1-month trial, no card required. Setup, data migration and staff training a
 ## Key facts
 
 - Made for India: INR pricing, GST-compliant billing in every state, multi-branch support across cities. Serves customers pan-India, fully remotely.
+- Focus regions: **Andhra Pradesh & Telangana first** — demos, staff training and day-to-day support are available **in Telugu** (also English and Hindi). Telugu landing page: https://www.medplix.ai/telugu.html
+- City pages: Hyderabad, Vijayawada, Visakhapatnam, Guntur, Nellore, Tirupati, Rajahmundry, Kakinada, Warangal, Karimnagar, Nizamabad, plus Bangalore, Chennai, Mumbai, Pune and Delhi NCR (all at https://www.medplix.ai/hospital-management-software-<city>.html).
 - Security: encryption in transit and at rest, automatic daily backups, role-based access, audit trails, tenant isolation. Data is exportable anytime (no lock-in).
 - 24/7 support on WhatsApp, phone and email.
 - Medplix.AI is a software provider; it does not provide medical advice.
