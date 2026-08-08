@@ -370,6 +370,30 @@ module.exports = async (req, res) => {
     const payload = { reply };
     if (intent) { payload.intent = intent; if (wa) payload.wa = wa; if (note) payload.note = note; }
     if (actions.length) payload.actions = actions.slice(0, 4);
+
+    // Mirror this turn into the Medplix CRM inbox (web-<sid> thread) so the
+    // team sees website conversations beside WhatsApp ones. Awaited with a
+    // short leash (serverless kills post-response work); failures never
+    // affect the visitor's reply.
+    const sid = String((req.body && req.body.sid) || '');
+    if (/^[a-z0-9]{10,40}$/.test(sid)) {
+      try {
+        const ctrlLog = new AbortController();
+        const tLog = setTimeout(() => ctrlLog.abort(), 2500);
+        await fetch('https://crm.medplix.ai/api/web-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            op: 'log',
+            sessionId: sid,
+            userText: messages[messages.length - 1].content,
+            replyText: reply,
+          }),
+          signal: ctrlLog.signal,
+        });
+        clearTimeout(tLog);
+      } catch (e) { console.error('crm_mirror_error', String(e && e.message)); }
+    }
     return res.status(200).json(payload);
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) {

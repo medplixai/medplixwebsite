@@ -625,6 +625,16 @@ function showSuccess() {
   // Real AI replies via /api/chat (Claude, server-side key). Falls back to the
   // local KB bot if the endpoint is unavailable (no key configured, error, timeout).
   var history = [];
+  // Stable per-browser session id — the backend mirrors each turn into the
+  // Medplix CRM inbox under this id, so the team sees website conversations.
+  var chatSid = '';
+  try {
+    chatSid = localStorage.getItem('mpx_chat_sid') || '';
+    if (!/^[a-z0-9]{16}$/.test(chatSid)) {
+      chatSid = Array.from({ length: 16 }, function () { return 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 36)]; }).join('');
+      localStorage.setItem('mpx_chat_sid', chatSid);
+    }
+  } catch (e) { chatSid = 'anon' + String(Date.now()).slice(-9); }
   function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'); }
   function askAI(q) {
     var t = typing();
@@ -633,7 +643,7 @@ function showSuccess() {
     fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: history.slice(-10) }),
+      body: JSON.stringify({ messages: history.slice(-10), sid: chatSid }),
       signal: ctrl ? ctrl.signal : undefined
     })
       .then(function (r) { if (!r.ok) throw new Error('api ' + r.status); return r.json(); })
