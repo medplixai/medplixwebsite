@@ -767,7 +767,7 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
 })();
 
 
-/* ===== Hero constellation — interactive particle network ===== */
+/* ===== Hero constellation — interactive particle network (rich) ===== */
 (function () {
   var cv = document.getElementById('heroFx');
   if (!cv || !cv.getContext) return;
@@ -776,7 +776,7 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
   var hero = cv.parentElement;
   var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
   var pts = [], mouse = { x: -9999, y: -9999 };
-  var running = false, inView = false, raf = 0;
+  var running = false, inView = false, raf = 0, T = 0;
   var TEAL = '23,168,154', NAVY = '28,79,160', GOLD = '234,161,20';
 
   function size() {
@@ -787,49 +787,76 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
     seed();
   }
   function seed() {
-    var n = Math.round(Math.min(190, Math.max(70, (W * H) / 8500)));
+    var n = Math.round(Math.min(230, Math.max(80, (W * H) / 7200)));
     pts = [];
     for (var i = 0; i < n; i++) {
+      var z = .4 + Math.random() * .6; // depth: .4 far … 1 near
+      var x = Math.random();
       pts.push({
         x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
-        r: Math.random() * 2.2 + 1.2,
-        c: (function (x) { return x < .58 ? TEAL : (x < .92 ? NAVY : GOLD); })(Math.random())
+        vx: (Math.random() - .5) * .38 * z, vy: (Math.random() - .5) * .38 * z,
+        r: (Math.random() * 2.1 + 1.1) * z,
+        z: z,
+        ph: Math.random() * 6.2832, tw: .5 + Math.random() * 1.2,
+        c: x < .58 ? TEAL : (x < .92 ? NAVY : GOLD)
       });
     }
   }
   function step() {
+    T += .016;
     ctx.clearRect(0, 0, W, H);
-    var i, j, p, q, dx, dy, d2, d;
+    var i, j, p, q, dx, dy, d2, d, a;
     for (i = 0; i < pts.length; i++) {
       p = pts[i];
       dx = p.x - mouse.x; dy = p.y - mouse.y; d2 = dx * dx + dy * dy;
       if (d2 < 19600 && d2 > .01) {
         d = Math.sqrt(d2);
-        var f = (1 - d / 140) * .55;
+        var f = (1 - d / 140) * .55 * p.z;
         p.vx += (dx / d) * f; p.vy += (dy / d) * f;
       }
       p.vx *= .985; p.vy *= .985;
-      if (Math.abs(p.vx) < .08) p.vx += (Math.random() - .5) * .02;
-      if (Math.abs(p.vy) < .08) p.vy += (Math.random() - .5) * .02;
+      if (Math.abs(p.vx) < .08 * p.z) p.vx += (Math.random() - .5) * .02;
+      if (Math.abs(p.vy) < .08 * p.z) p.vy += (Math.random() - .5) * .02;
       p.x += p.vx; p.y += p.vy;
       if (p.x < -20) p.x = W + 20; else if (p.x > W + 20) p.x = -20;
       if (p.y < -20) p.y = H + 20; else if (p.y > H + 20) p.y = -20;
     }
+    // links between particles
     for (i = 0; i < pts.length; i++) {
       p = pts[i];
       for (j = i + 1; j < pts.length; j++) {
         q = pts[j];
         dx = p.x - q.x; dy = p.y - q.y; d2 = dx * dx + dy * dy;
         if (d2 < 16900) {
-          ctx.strokeStyle = 'rgba(' + TEAL + ',' + ((1 - d2 / 16900) * .34).toFixed(3) + ')';
+          a = (1 - d2 / 16900) * .44 * ((p.z + q.z) / 2);
+          ctx.strokeStyle = 'rgba(' + TEAL + ',' + a.toFixed(3) + ')';
           ctx.lineWidth = 1;
           ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
         }
       }
-      ctx.fillStyle = 'rgba(' + p.c + ',.1)';
+    }
+    // links from mouse to nearby particles — "you are part of the network"
+    if (mouse.x > -999) {
+      for (i = 0; i < pts.length; i++) {
+        p = pts[i];
+        dx = p.x - mouse.x; dy = p.y - mouse.y; d2 = dx * dx + dy * dy;
+        if (d2 < 32400) { // 180px
+          a = (1 - Math.sqrt(d2) / 180) * .45;
+          ctx.strokeStyle = 'rgba(' + NAVY + ',' + a.toFixed(3) + ')';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+        }
+      }
+      ctx.fillStyle = 'rgba(' + NAVY + ',.5)';
+      ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 2.4, 0, 6.2832); ctx.fill();
+    }
+    // dots with halo + twinkle
+    for (i = 0; i < pts.length; i++) {
+      p = pts[i];
+      var tw = .82 + .22 * Math.sin(T * p.tw + p.ph);
+      ctx.fillStyle = 'rgba(' + p.c + ',' + (.15 * tw).toFixed(3) + ')';
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3.1, 0, 6.2832); ctx.fill();
-      ctx.fillStyle = 'rgba(' + p.c + ',.78)';
+      ctx.fillStyle = 'rgba(' + p.c + ',' + Math.min(1, .95 * tw * (.55 + .5 * p.z)).toFixed(3) + ')';
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
     }
   }
