@@ -1481,3 +1481,4 @@ figure.photo-card{margin:0}
 
 .about-2col{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;align-items:center}
 @media(max-width:860px){.about-2col{grid-template-columns:1fr}}
+.hero-photo{aspect-ratio:4/3;width:100%;border-radius:22px}

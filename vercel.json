@@ -52,10 +52,5 @@
         }
       ]
     }
-  ],
-  "functions": {
-    "api/gen-image.js": {
-      "maxDuration": 60
-    }
-  }
+  ]
 }
