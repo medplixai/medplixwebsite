@@ -766,3 +766,98 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
   }
 })();
 
+
+/* ===== Hero constellation — interactive particle network ===== */
+(function () {
+  var cv = document.getElementById('heroFx');
+  if (!cv || !cv.getContext) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ctx = cv.getContext('2d');
+  var hero = cv.parentElement;
+  var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var pts = [], mouse = { x: -9999, y: -9999 };
+  var running = false, inView = false, raf = 0;
+  var TEAL = '23,168,154', NAVY = '28,79,160';
+
+  function size() {
+    var r = hero.getBoundingClientRect();
+    W = r.width; H = r.height;
+    cv.width = Math.max(1, W * DPR); cv.height = Math.max(1, H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    seed();
+  }
+  function seed() {
+    var n = Math.round(Math.min(110, Math.max(40, (W * H) / 16000)));
+    pts = [];
+    for (var i = 0; i < n; i++) {
+      pts.push({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
+        r: Math.random() * 2 + 1.1,
+        c: Math.random() < .72 ? TEAL : NAVY
+      });
+    }
+  }
+  function step() {
+    ctx.clearRect(0, 0, W, H);
+    var i, j, p, q, dx, dy, d2, d;
+    for (i = 0; i < pts.length; i++) {
+      p = pts[i];
+      dx = p.x - mouse.x; dy = p.y - mouse.y; d2 = dx * dx + dy * dy;
+      if (d2 < 19600 && d2 > .01) {
+        d = Math.sqrt(d2);
+        var f = (1 - d / 140) * .55;
+        p.vx += (dx / d) * f; p.vy += (dy / d) * f;
+      }
+      p.vx *= .985; p.vy *= .985;
+      if (Math.abs(p.vx) < .08) p.vx += (Math.random() - .5) * .02;
+      if (Math.abs(p.vy) < .08) p.vy += (Math.random() - .5) * .02;
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -20) p.x = W + 20; else if (p.x > W + 20) p.x = -20;
+      if (p.y < -20) p.y = H + 20; else if (p.y > H + 20) p.y = -20;
+    }
+    for (i = 0; i < pts.length; i++) {
+      p = pts[i];
+      for (j = i + 1; j < pts.length; j++) {
+        q = pts[j];
+        dx = p.x - q.x; dy = p.y - q.y; d2 = dx * dx + dy * dy;
+        if (d2 < 12100) {
+          ctx.strokeStyle = 'rgba(' + TEAL + ',' + ((1 - d2 / 12100) * .24).toFixed(3) + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+        }
+      }
+      ctx.fillStyle = 'rgba(' + p.c + ',.62)';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+    }
+  }
+  function loop() { step(); raf = requestAnimationFrame(loop); }
+  function start() { if (!running) { running = true; raf = requestAnimationFrame(loop); } }
+  function stop() { if (running) { running = false; cancelAnimationFrame(raf); } }
+
+  size();
+  if (reduce) { step(); return; }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      inView = es[0].isIntersecting;
+      inView && !document.hidden ? start() : stop();
+    }, { threshold: 0 }).observe(hero);
+  } else { inView = true; start(); }
+  document.addEventListener('visibilitychange', function () {
+    document.hidden ? stop() : (inView && start());
+  });
+  window.addEventListener('resize', function () {
+    clearTimeout(cv._rt); cv._rt = setTimeout(size, 150);
+  });
+  hero.addEventListener('mousemove', function (e) {
+    var r = cv.getBoundingClientRect();
+    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+  });
+  hero.addEventListener('mouseleave', function () { mouse.x = -9999; mouse.y = -9999; });
+  hero.addEventListener('touchmove', function (e) {
+    var t = e.touches[0]; if (!t) return;
+    var r = cv.getBoundingClientRect();
+    mouse.x = t.clientX - r.left; mouse.y = t.clientY - r.top;
+  }, { passive: true });
+  hero.addEventListener('touchend', function () { mouse.x = -9999; mouse.y = -9999; });
+})();
