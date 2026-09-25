@@ -777,7 +777,7 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
   var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
   var pts = [], mouse = { x: -9999, y: -9999 };
   var running = false, inView = false, raf = 0;
-  var TEAL = '23,168,154', NAVY = '28,79,160';
+  var TEAL = '23,168,154', NAVY = '28,79,160', GOLD = '234,161,20';
 
   function size() {
     var r = hero.getBoundingClientRect();
@@ -787,14 +787,14 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
     seed();
   }
   function seed() {
-    var n = Math.round(Math.min(110, Math.max(40, (W * H) / 16000)));
+    var n = Math.round(Math.min(190, Math.max(70, (W * H) / 8500)));
     pts = [];
     for (var i = 0; i < n; i++) {
       pts.push({
         x: Math.random() * W, y: Math.random() * H,
         vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
-        r: Math.random() * 2 + 1.1,
-        c: Math.random() < .72 ? TEAL : NAVY
+        r: Math.random() * 2.2 + 1.2,
+        c: (function (x) { return x < .58 ? TEAL : (x < .92 ? NAVY : GOLD); })(Math.random())
       });
     }
   }
@@ -821,13 +821,15 @@ if (yearEl) yearEl.textContent = yearEl.textContent.replace('2026', new Date().g
       for (j = i + 1; j < pts.length; j++) {
         q = pts[j];
         dx = p.x - q.x; dy = p.y - q.y; d2 = dx * dx + dy * dy;
-        if (d2 < 12100) {
-          ctx.strokeStyle = 'rgba(' + TEAL + ',' + ((1 - d2 / 12100) * .24).toFixed(3) + ')';
+        if (d2 < 16900) {
+          ctx.strokeStyle = 'rgba(' + TEAL + ',' + ((1 - d2 / 16900) * .34).toFixed(3) + ')';
           ctx.lineWidth = 1;
           ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
         }
       }
-      ctx.fillStyle = 'rgba(' + p.c + ',.62)';
+      ctx.fillStyle = 'rgba(' + p.c + ',.1)';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3.1, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = 'rgba(' + p.c + ',.78)';
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
     }
   }
