@@ -1478,3 +1478,6 @@ body.chat-open .chat-fab,body.chat-open .whatsapp{visibility:hidden}
 figure.photo-card{margin:0}
 .city-photo{max-width:880px;margin:26px auto 0;aspect-ratio:3/2}
 .dm-graphic .photo-card{aspect-ratio:4/3;width:100%}
+
+.about-2col{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;align-items:center}
+@media(max-width:860px){.about-2col{grid-template-columns:1fr}}
