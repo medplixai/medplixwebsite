@@ -1482,3 +1482,73 @@ figure.photo-card{margin:0}
 .about-2col{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;align-items:center}
 @media(max-width:860px){.about-2col{grid-template-columns:1fr}}
 .hero-photo{aspect-ratio:4/3;width:100%;border-radius:22px}
+
+/* ===================== TRANSITIONS & EFFECTS PACK ===================== */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes fxUp { from { opacity: 0; transform: translateY(26px) } to { opacity: 1; transform: none } }
+  @keyframes fxScale { from { opacity: 0; transform: scale(.94) } to { opacity: 1; transform: none } }
+  @keyframes fxShine { from { left: -70% } to { left: 120% } }
+
+  /* entrance on load — homepage hero */
+  .hero-copy > * { animation: fxUp .65s ease backwards }
+  .hero-copy > *:nth-child(1) { animation-delay: .05s }
+  .hero-copy > *:nth-child(2) { animation-delay: .13s }
+  .hero-copy > *:nth-child(3) { animation-delay: .21s }
+  .hero-copy > *:nth-child(4) { animation-delay: .29s }
+  .hero-copy > *:nth-child(5) { animation-delay: .37s }
+  .hero-copy > *:nth-child(6) { animation-delay: .45s }
+  .hero-visual { animation: fxScale .85s ease .3s backwards }
+  .heroprod .heroprod-pill { animation: fxUp .5s ease backwards }
+  .heroprod .heroprod-pill:nth-of-type(1) { animation-delay: .5s }
+  .heroprod .heroprod-pill:nth-of-type(2) { animation-delay: .56s }
+  .heroprod .heroprod-pill:nth-of-type(3) { animation-delay: .62s }
+  .heroprod .heroprod-pill:nth-of-type(4) { animation-delay: .68s }
+  .heroprod .heroprod-pill:nth-of-type(5) { animation-delay: .74s }
+  .heroprod .heroprod-pill:nth-of-type(6) { animation-delay: .8s }
+  .heroprod .heroprod-pill:nth-of-type(7) { animation-delay: .86s }
+  .heroprod .heroprod-pill:nth-of-type(8) { animation-delay: .92s }
+
+  /* entrance on load — product / city / about hero */
+  .prod-hero-grid > div:first-child > * { animation: fxUp .6s ease backwards }
+  .prod-hero-grid > div:first-child > *:nth-child(1) { animation-delay: .04s }
+  .prod-hero-grid > div:first-child > *:nth-child(2) { animation-delay: .11s }
+  .prod-hero-grid > div:first-child > *:nth-child(3) { animation-delay: .18s }
+  .prod-hero-grid > div:first-child > *:nth-child(4) { animation-delay: .25s }
+  .prod-hero-grid > div:first-child > *:nth-child(5) { animation-delay: .32s }
+  .prod-hero-grid > div:first-child > *:nth-child(6) { animation-delay: .39s }
+  .prod-hero-visual { animation: fxScale .8s ease .28s backwards }
+
+  /* button shine sweep */
+  .btn-primary::after { content: ""; position: absolute; top: 0; bottom: 0; left: -70%; width: 45%;
+    background: linear-gradient(105deg, transparent, rgba(255,255,255,.5), transparent);
+    transform: skewX(-20deg); pointer-events: none }
+  .btn-primary:hover::after { animation: fxShine .65s ease }
+
+  /* staggered scroll reveals (pages with script.js) */
+  .js .reveal.flow-grid, .js .reveal.trust-grid, .js .reveal.steps, .js .reveal.switch-steps,
+  .js .reveal.who-its-for-grid, .js .reveal.connect-grid, .js .reveal.integrations-grid { opacity: 1; transform: none }
+  .js .reveal.flow-grid > *, .js .reveal.trust-grid > *, .js .reveal.steps > *, .js .reveal.switch-steps > *,
+  .js .reveal.who-its-for-grid > *, .js .reveal.connect-grid > *, .js .reveal.integrations-grid > * {
+    opacity: 0; transform: translateY(26px); transition: opacity .55s ease, transform .55s ease }
+  .js .reveal.in.flow-grid > *, .js .reveal.in.trust-grid > *, .js .reveal.in.steps > *, .js .reveal.in.switch-steps > *,
+  .js .reveal.in.who-its-for-grid > *, .js .reveal.in.connect-grid > *, .js .reveal.in.integrations-grid > * {
+    opacity: 1; transform: none }
+  .js .reveal.in.flow-grid > *:nth-child(1), .js .reveal.in.trust-grid > *:nth-child(1), .js .reveal.in.steps > *:nth-child(1), .js .reveal.in.switch-steps > *:nth-child(1), .js .reveal.in.who-its-for-grid > *:nth-child(1), .js .reveal.in.connect-grid > *:nth-child(1), .js .reveal.in.integrations-grid > *:nth-child(1) { transition-delay: 0.0s }
+  .js .reveal.in.flow-grid > *:nth-child(2), .js .reveal.in.trust-grid > *:nth-child(2), .js .reveal.in.steps > *:nth-child(2), .js .reveal.in.switch-steps > *:nth-child(2), .js .reveal.in.who-its-for-grid > *:nth-child(2), .js .reveal.in.connect-grid > *:nth-child(2), .js .reveal.in.integrations-grid > *:nth-child(2) { transition-delay: 0.08s }
+  .js .reveal.in.flow-grid > *:nth-child(3), .js .reveal.in.trust-grid > *:nth-child(3), .js .reveal.in.steps > *:nth-child(3), .js .reveal.in.switch-steps > *:nth-child(3), .js .reveal.in.who-its-for-grid > *:nth-child(3), .js .reveal.in.connect-grid > *:nth-child(3), .js .reveal.in.integrations-grid > *:nth-child(3) { transition-delay: 0.16s }
+  .js .reveal.in.flow-grid > *:nth-child(4), .js .reveal.in.trust-grid > *:nth-child(4), .js .reveal.in.steps > *:nth-child(4), .js .reveal.in.switch-steps > *:nth-child(4), .js .reveal.in.who-its-for-grid > *:nth-child(4), .js .reveal.in.connect-grid > *:nth-child(4), .js .reveal.in.integrations-grid > *:nth-child(4) { transition-delay: 0.24s }
+  .js .reveal.in.flow-grid > *:nth-child(5), .js .reveal.in.trust-grid > *:nth-child(5), .js .reveal.in.steps > *:nth-child(5), .js .reveal.in.switch-steps > *:nth-child(5), .js .reveal.in.who-its-for-grid > *:nth-child(5), .js .reveal.in.connect-grid > *:nth-child(5), .js .reveal.in.integrations-grid > *:nth-child(5) { transition-delay: 0.32s }
+  .js .reveal.in.flow-grid > *:nth-child(6), .js .reveal.in.trust-grid > *:nth-child(6), .js .reveal.in.steps > *:nth-child(6), .js .reveal.in.switch-steps > *:nth-child(6), .js .reveal.in.who-its-for-grid > *:nth-child(6), .js .reveal.in.connect-grid > *:nth-child(6), .js .reveal.in.integrations-grid > *:nth-child(6) { transition-delay: 0.4s }
+  .js .reveal.in.flow-grid > *:nth-child(7), .js .reveal.in.trust-grid > *:nth-child(7), .js .reveal.in.steps > *:nth-child(7), .js .reveal.in.switch-steps > *:nth-child(7), .js .reveal.in.who-its-for-grid > *:nth-child(7), .js .reveal.in.connect-grid > *:nth-child(7), .js .reveal.in.integrations-grid > *:nth-child(7) { transition-delay: 0.48s }
+  .js .reveal.in.flow-grid > *:nth-child(n+8), .js .reveal.in.trust-grid > *:nth-child(n+8), .js .reveal.in.steps > *:nth-child(n+8), .js .reveal.in.switch-steps > *:nth-child(n+8), .js .reveal.in.who-its-for-grid > *:nth-child(n+8), .js .reveal.in.connect-grid > *:nth-child(n+8), .js .reveal.in.integrations-grid > *:nth-child(n+8) { transition-delay: .56s }
+}
+
+/* hover polish (safe under reduced motion) */
+.faq { transition: border-color .25s ease, box-shadow .25s ease }
+.faq:hover, .faq[open] { border-color: rgba(23,168,154,.45); box-shadow: 0 10px 24px -14px rgba(21,160,140,.4) }
+.addon { transition: transform .22s ease, box-shadow .22s ease }
+.addon:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -14px rgba(15,44,77,.35) }
+.benefit-item { transition: transform .25s ease }
+.benefit-item:hover { transform: translateX(5px) }
+.foot-col a, .foot-cities a { transition: color .2s ease }
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 6px }
